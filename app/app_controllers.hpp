@@ -1,6 +1,5 @@
 #include "raylib.h"
 #include "lib/player/player.hpp"
-#include "lib/asteroids/asteroids.hpp"
 
 #include <stdio.h>
 #include "math.h"
