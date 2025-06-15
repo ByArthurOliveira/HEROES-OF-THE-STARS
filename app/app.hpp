@@ -5,7 +5,7 @@
 
 int InitializeApp()
 {
-    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_TOPMOST);
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_TOPMOST | FLAG_WINDOW_UNDECORATED);
     SetTargetFPS(240);
     InitWindow(screen_width, screen_height, "HEROES OF THE STARS");
     InitAudioDevice();
