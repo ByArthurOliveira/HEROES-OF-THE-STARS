@@ -74,27 +74,20 @@ void DrawMainMenu(Texture2D main_menu_background, Sound switch_sound)
 
 void DrawGameplay(Texture2D gameplay_background, Player player, Laser lasers[], int lasers_limit)
 {
-    // Desenha o fundo do jogo
-    DrawTexture(gameplay_background, 0, 0, GRAY);
-
-    // Desenha a textura principal do jogador
+    // Agora o DrawGameplay não precisa mais redesenhar o background fixo,
+    // pois ele é feito no loop principal com bgY1/bgY2.
+    
+    // Desenha somente jogador, boost e lasers:
     DrawTexture(player.player_texture, player.player_position_X, player.player_position_Y, WHITE);
 
-    // Se o boost estiver ativo e o jogo não estiver pausado, desenha o boost
     if (IsKeyDown(KEY_LEFT_SHIFT) && !pause_app)
-    {
         DrawTexture(player.player_boost_texture, player.player_boost_texture_X, player.player_boost_texture_Y, WHITE);
-    }
 
-    // Desenha todos os lasers ativos
     for (int i = 0; i < lasers_limit; i++)
-    {
         if (lasers[i].is_active)
-        {
             DrawTexture(lasers[i].laser_texture, lasers[i].laser_texture_X, lasers[i].laser_texture_Y, WHITE);
-        }
-    }
 }
+
 
 void DrawScoreboard(Texture2D main_menu_background)
 {

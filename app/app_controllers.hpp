@@ -7,6 +7,12 @@
 int screen_width = 1366;
 int screen_height = 768;
 
+// Declara os 2 backgrounds para o efeito de rolagem
+static const float BG_SCROLL_SPEED = 100.0f;
+static float bgY1 = 0;
+static float bgY2 = 0;
+static bool bgInitialized = false;
+
 float delta_time;
 
 bool stop_app = false;
