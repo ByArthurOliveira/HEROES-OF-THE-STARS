@@ -9,9 +9,9 @@ int screen_height = 768;
 
 // Declara os 2 backgrounds para o efeito de rolagem
 static const float BG_SCROLL_SPEED = 100.0f;
-static float bgY1 = 0;
-static float bgY2 = 0;
-static bool bgInitialized = false;
+static float bg_1y = 0;
+static float bg_2y = 0;
+static bool bg_initialized = false;
 
 float delta_time;
 

@@ -76,7 +76,7 @@ void DrawGameplay(Texture2D gameplay_background, Player player, Laser lasers[], 
 {
     // Agora o DrawGameplay não precisa mais redesenhar o background fixo,
     // pois ele é feito no loop principal com bgY1/bgY2.
-    
+
     // Desenha somente jogador, boost e lasers:
     DrawTexture(player.player_texture, player.player_position_X, player.player_position_Y, WHITE);
 
@@ -87,7 +87,6 @@ void DrawGameplay(Texture2D gameplay_background, Player player, Laser lasers[], 
         if (lasers[i].is_active)
             DrawTexture(lasers[i].laser_texture, lasers[i].laser_texture_X, lasers[i].laser_texture_Y, WHITE);
 }
-
 
 void DrawScoreboard(Texture2D main_menu_background)
 {

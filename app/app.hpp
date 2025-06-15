@@ -64,105 +64,107 @@ int InitializeApp()
             DrawMainMenu(app_assets.main_menu_background, app_assets.switch_sound);
             break;
 
-case GAMEPLAY:
-    if (IsKeyPressed(KEY_ESCAPE))
-        pause_app = !pause_app;
+        case GAMEPLAY:
+            if (IsKeyPressed(KEY_ESCAPE))
+                pause_app = !pause_app;
 
-    // inicialização única do background
-    if (!bgInitialized)
-    {
-        bgY1 = 0;
-        bgY2 = -app_assets.gameplay_background.height;
-        bgInitialized = true;
-    }
-
-    if (!pause_app)
-    {
-        // ===== 1) Logica de scroll do fundo =====
-        bgY1 += BG_SCROLL_SPEED * delta_time;
-        bgY2 += BG_SCROLL_SPEED * delta_time;
-        if (bgY1 >= screen_height) bgY1 = bgY2 - app_assets.gameplay_background.height;
-        if (bgY2 >= screen_height) bgY2 = bgY1 - app_assets.gameplay_background.height;
-
-        // ===== 2) Movimento do Jogador =====
-        if (IsKeyDown(KEY_W) && player.player_position_Y > 0)
-            player.player_position_Y -= player.speed * delta_time;
-        if (IsKeyDown(KEY_S) && player.player_position_Y < screen_height - player.player_texture.height)
-            player.player_position_Y += player.speed * delta_time;
-        if (IsKeyDown(KEY_A) && player.player_position_X > 0)
-            player.player_position_X -= player.speed * delta_time;
-        if (IsKeyDown(KEY_D) && player.player_position_X < screen_width - player.player_texture.width)
-            player.player_position_X += player.speed * delta_time;
-
-        // ===== 3) Disparo dos Lasers =====
-        laser_timer.time = GetTime();
-        if (IsKeyDown(KEY_SPACE) && laser_timer.time - laser_timer.last_time > 0.275f)
-        {
-            for (int i = 0; i < MAX_LASERS; i++)
+            // inicialização única do background
+            if (!bg_initialized)
             {
-                if (!lasers[i].is_active)
+                bg_1y = 0;
+                bg_2y = -app_assets.gameplay_background.height;
+                bg_initialized = true;
+            }
+
+            if (!pause_app)
+            {
+                // ===== 1) Logica de scroll do fundo =====
+                bg_1y += BG_SCROLL_SPEED * delta_time;
+                bg_2y += BG_SCROLL_SPEED * delta_time;
+                if (bg_1y >= screen_height)
+                    bg_1y = bg_2y - app_assets.gameplay_background.height;
+                if (bg_2y >= screen_height)
+                    bg_2y = bg_1y - app_assets.gameplay_background.height;
+
+                // ===== 2) Movimento do Jogador =====
+                if (IsKeyDown(KEY_W) && player.player_position_Y > 0)
+                    player.player_position_Y -= player.speed * delta_time;
+                if (IsKeyDown(KEY_S) && player.player_position_Y < screen_height - player.player_texture.height)
+                    player.player_position_Y += player.speed * delta_time;
+                if (IsKeyDown(KEY_A) && player.player_position_X > 0)
+                    player.player_position_X -= player.speed * delta_time;
+                if (IsKeyDown(KEY_D) && player.player_position_X < screen_width - player.player_texture.width)
+                    player.player_position_X += player.speed * delta_time;
+
+                // ===== 3) Disparo dos Lasers =====
+                laser_timer.time = GetTime();
+                if (IsKeyDown(KEY_SPACE) && laser_timer.time - laser_timer.last_time > 0.275f)
                 {
-                    lasers[i].laser_texture_X = player.player_position_X + 50;
-                    lasers[i].laser_texture_Y = player.player_position_Y - 90;
-                    lasers[i].is_active = true;
-                    PlaySound(lasers[i].laser_sound);
-                    laser_timer.last_time = laser_timer.time;
-                    break;
+                    for (int i = 0; i < MAX_LASERS; i++)
+                    {
+                        if (!lasers[i].is_active)
+                        {
+                            lasers[i].laser_texture_X = player.player_position_X + 50;
+                            lasers[i].laser_texture_Y = player.player_position_Y - 90;
+                            lasers[i].is_active = true;
+                            PlaySound(lasers[i].laser_sound);
+                            laser_timer.last_time = laser_timer.time;
+                            break;
+                        }
+                    }
+                }
+
+                // Atualiza posição dos lasers ativos
+                for (int i = 0; i < MAX_LASERS; i++)
+                {
+                    if (lasers[i].is_active)
+                    {
+                        lasers[i].laser_texture_Y -= lasers[i].laser_speed * delta_time;
+                        if (lasers[i].laser_texture_Y + lasers[i].laser_texture.height < 0)
+                            lasers[i].is_active = false;
+                    }
+                }
+
+                // ===== 4) Boost de Velocidade =====
+                if (IsKeyDown(KEY_LEFT_SHIFT))
+                {
+                    player.player_boost_texture_X = player.player_position_X + 50;
+                    player.player_boost_texture_Y = player.player_position_Y + 90;
+                    player.speed = 400.0f;
+                }
+                else
+                {
+                    player.speed = 250.0f;
                 }
             }
-        }
 
-        // Atualiza posição dos lasers ativos
-        for (int i = 0; i < MAX_LASERS; i++)
-        {
-            if (lasers[i].is_active)
+            // ===== 5) Desenho (único BeginDrawing/EndDrawing no loop principal) =====
+            // no seu main loop: BeginDrawing(); ClearBackground(RAYWHITE);
+
+            // Desenha o fundo em loop:
+            DrawTexture(app_assets.gameplay_background, 0, (int)bg_1y, WHITE);
+            DrawTexture(app_assets.gameplay_background, 0, (int)bg_2y, WHITE);
+
+            // Desenha o jogador:
+            DrawTexture(player.player_texture, player.player_position_X, player.player_position_Y, WHITE);
+
+            // Desenha boost se ativo:
+            if (IsKeyDown(KEY_LEFT_SHIFT) && !pause_app)
+                DrawTexture(player.player_boost_texture, player.player_boost_texture_X, player.player_boost_texture_Y, WHITE);
+
+            // Desenha lasers ativos:
+            for (int i = 0; i < MAX_LASERS; i++)
+                if (lasers[i].is_active)
+                    DrawTexture(lasers[i].laser_texture, lasers[i].laser_texture_X, lasers[i].laser_texture_Y, WHITE);
+
+            // Texto de pausa, se necessário:
+            if (pause_app)
             {
-                lasers[i].laser_texture_Y -= lasers[i].laser_speed * delta_time;
-                if (lasers[i].laser_texture_Y + lasers[i].laser_texture.height < 0)
-                    lasers[i].is_active = false;
+                DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);
+                DrawText("PRESSIONE ESC PARA CONTINUAR!", 75, 450, 25, GOLD);
             }
-        }
-
-        // ===== 4) Boost de Velocidade =====
-        if (IsKeyDown(KEY_LEFT_SHIFT))
-        {
-            player.player_boost_texture_X = player.player_position_X + 50;
-            player.player_boost_texture_Y = player.player_position_Y + 90;
-            player.speed = 400.0f;
-        }
-        else
-        {
-            player.speed = 250.0f;
-        }
-    }
-
-    // ===== 5) Desenho (único BeginDrawing/EndDrawing no loop principal) =====
-    // no seu main loop: BeginDrawing(); ClearBackground(RAYWHITE);
-
-    // Desenha o fundo em loop:
-    DrawTexture(app_assets.gameplay_background, 0, (int)bgY1, WHITE);
-    DrawTexture(app_assets.gameplay_background, 0, (int)bgY2, WHITE);
-
-    // Desenha o jogador:
-    DrawTexture(player.player_texture, player.player_position_X, player.player_position_Y, WHITE);
-
-    // Desenha boost se ativo:
-    if (IsKeyDown(KEY_LEFT_SHIFT) && !pause_app)
-        DrawTexture(player.player_boost_texture, player.player_boost_texture_X, player.player_boost_texture_Y, WHITE);
-
-    // Desenha lasers ativos:
-    for (int i = 0; i < MAX_LASERS; i++)
-        if (lasers[i].is_active)
-            DrawTexture(lasers[i].laser_texture, lasers[i].laser_texture_X, lasers[i].laser_texture_Y, WHITE);
-
-    // Texto de pausa, se necessário:
-    if (pause_app)
-    {
-        DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);
-        DrawText("PRESSIONE ESC PARA CONTINUAR!", 75, 450, 25, GOLD);
-    }
-    // no seu main loop: EndDrawing();
-    break;
+            // no seu main loop: EndDrawing();
+            break;
 
         case SCOREBOARD:
             if (IsKeyPressed(KEY_ESCAPE))

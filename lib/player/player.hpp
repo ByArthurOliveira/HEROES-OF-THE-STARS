@@ -5,7 +5,7 @@
 #include "raylib.h"
 #include <stdio.h>
 
-#define MAX_LASERS 25  // Número máximo de lasers ativos ao mesmo tempo
+#define MAX_LASERS 25 // Número máximo de lasers ativos ao mesmo tempo
 
 // Estrutura do jogador
 typedef struct Player
@@ -24,9 +24,9 @@ typedef struct Player
 // Estrutura de um único laser
 typedef struct Laser
 {
-    bool is_active;                   // Se o laser está ativo (foi disparado)
+    bool is_active; // Se o laser está ativo (foi disparado)
 
-    Texture2D laser_texture;         // Textura do laser
+    Texture2D laser_texture; // Textura do laser
     float laser_texture_X;
     float laser_texture_Y;
     float laser_speed;
