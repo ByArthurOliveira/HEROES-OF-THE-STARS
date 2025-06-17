@@ -10,10 +10,11 @@
 // Descrição: Desenha o menu principal na tela com as opções
 // e trata a entrada do usuário para navegar entre elas.
 //-----------------------------------------------------------------
-void DrawMainMenu(Texture2D menu_background, Sound switch_sound)
+void DrawMainMenu(Texture2D menu_background, Texture2D blur, Sound switch_sound)
 {
     // Desenha o fundo do menu principal
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
+    DrawTexture(blur, 0, 0, LIGHTGRAY);
 
     // Exibe as opções com destaque conforme a opção selecionada
     switch (selected_option)
@@ -118,25 +119,28 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[])
 // Função: DrawScoreboard
 // Descrição: Renderiza a tela do placar utilizando o background principal.
 //-----------------------------------------------------------------
-void DrawScoreboard(Texture2D menu_background)
+void DrawScoreboard(Texture2D menu_background,Texture2D blur)
 {
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
+    DrawTexture(blur, 0, 0, LIGHTGRAY);
 }
 //-----------------------------------------------------------------
 // Função: DrawCommands
 // Descrição: Renderiza a tela que exibe os comandos do jogo.
 //-----------------------------------------------------------------
-void DrawCommands(Texture2D menu_background)
+void DrawCommands(Texture2D menu_background,Texture2D blur)
 {
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
+    DrawTexture(blur, 0, 0, LIGHTGRAY);
 }
 //-----------------------------------------------------------------
 // Função: DrawCredits
 // Descrição: Renderiza a tela com os créditos do jogo.
 //-----------------------------------------------------------------
-void DrawCredits(Texture2D menu_background)
+void DrawCredits(Texture2D menu_background,Texture2D blur)
 {
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
+    DrawTexture(blur, 0, 0, LIGHTGRAY);
 }
 //-----------------------------------------------------------------
 // Função: ExitApp
@@ -145,7 +149,6 @@ void DrawCredits(Texture2D menu_background)
 //-----------------------------------------------------------------
 bool ExitApp()
 {
-    stop_app = true;
-    return stop_app;
+    return stop_app = true;
 }
 #endif // APP_SCREENS_HPP

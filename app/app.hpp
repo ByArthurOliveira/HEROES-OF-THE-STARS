@@ -90,7 +90,7 @@ int InitializeApp()
                 }
             }
 
-            DrawMainMenu(app_assets.menu_background, app_assets.switch_option_sound);
+            DrawMainMenu(app_assets.menu_background, app_assets.blur, app_assets.switch_option_sound);
             break;
         }
 
@@ -185,7 +185,6 @@ int InitializeApp()
             DrawGameplay(app_assets, player, lasers);
             if (pause_app)
             {
-                //DrawTexture(app_assets.blur,0,0,LIGHTGRAY);
                 DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);
                 DrawText("PRESSIONE ESC PARA CONTINUAR!", 75, 450, 25, GOLD);
             }
@@ -206,7 +205,7 @@ int InitializeApp()
             if (IsKeyPressed(KEY_ESCAPE))
                 current_app_state = MAIN_MENU;
 
-            DrawScoreboard(app_assets.menu_background);
+            DrawScoreboard(app_assets.menu_background,app_assets.blur);
             break;
         }
 
@@ -224,7 +223,7 @@ int InitializeApp()
             if (IsKeyPressed(KEY_ESCAPE))
                 current_app_state = MAIN_MENU;
 
-            DrawCommands(app_assets.menu_background);
+            DrawCommands(app_assets.menu_background,app_assets.blur);
             break;
         }
 
@@ -242,7 +241,7 @@ int InitializeApp()
             if (IsKeyPressed(KEY_ESCAPE))
                 current_app_state = MAIN_MENU;
 
-            DrawCredits(app_assets.menu_background);
+            DrawCredits(app_assets.menu_background,app_assets.blur);
             break;
         }
 
@@ -262,11 +261,8 @@ int InitializeApp()
     //-----------------------------------------------------------
     // Limpeza e Liberação de Recursos
     //-----------------------------------------------------------
-    for (int i = 0; i < MAX_LASERS; i++)
-    {
-        UnloadTexture(lasers[i].texture);
-        UnloadSound(lasers[i].sound);
-    }
+    UnloadTexture(lasers->texture);
+    UnloadSound(lasers->sound);
     UnloadTexture(player.boost_texture);
     UnloadTexture(player.texture);
     UnloadSound(app_assets.switch_option_sound);
