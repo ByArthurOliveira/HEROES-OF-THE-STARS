@@ -1,9 +1,9 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include <stdio.h>
 #include "raylib.h"
 #include "app/app_screens.hpp"
-#include <stdio.h>
 
 //-----------------------------------------------------------------
 // Função: InitializeApp
@@ -191,7 +191,7 @@ int InitializeApp()
             DrawTexture(app_assets.gameplay_background, 0, (int)bg_2y, WHITE);
 
             DrawTextEx(app_assets.font, "SCORE:", {1150, 25}, 25, 0, GOLD);
-            DrawTextEx(app_assets.font,TextFormat("%i", player.score), {1250, 25}, 25,1,GOLD);
+            DrawTextEx(app_assets.font, TextFormat("%i", player.score), {1250, 25}, 25, 1, GOLD);
 
             DrawTexture(app_assets.lives_counter, 25, 25, WHITE);
             DrawTexture(app_assets._X, 70, 30, WHITE);

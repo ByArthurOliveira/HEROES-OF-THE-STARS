@@ -1,10 +1,10 @@
 #ifndef APP_SCREENS_HPP
 #define APP_SCREENS_HPP
 
+#include <stdio.h>
 #include "raylib.h"
 #include "app_controllers.hpp"
 #include "app_assets.hpp"
-#include <stdio.h>
 
 //-----------------------------------------------------------------
 // Função: DrawMainMenu

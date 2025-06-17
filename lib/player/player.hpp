@@ -2,6 +2,7 @@
 #define PLAYER_HPP
 
 // Inclusão da biblioteca necessária
+#include <stdio.h>
 #include "raylib.h"
 
 // Constantes

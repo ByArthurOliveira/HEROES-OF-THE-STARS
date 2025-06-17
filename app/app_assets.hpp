@@ -1,8 +1,8 @@
 #ifndef APP_ASSETS
 #define APP_ASSETS
 
-#include "raylib.h"
 #include <stdio.h>
+#include "raylib.h"
 
 //-----------------------------------------------------------------
 // Estrutura: AppAssets
