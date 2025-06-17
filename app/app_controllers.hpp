@@ -1,63 +1,72 @@
-// Inclui a biblioteca principal do Raylib para gráficos e áudio
-#include "raylib.h"
+#ifndef APP_CONTROLLERS_HPP
+#define APP_CONTROLLERS_HPP
 
-// Inclui o cabeçalho do jogador, presumivelmente contendo a definição da estrutura Player
+//==================================================
+// Bibliotecas Padrão
+//==================================================
+#include <stdio.h>
+#include <string.h>
+#include "math.h" // Utilizado para funções matemáticas
+
+//==================================================
+// Bibliotecas de Terceiros e Projeto
+//==================================================
+#include "raylib.h"
 #include "lib/player/player.hpp"
 
-// Inclui a biblioteca padrão para operações de entrada e saída
-#include <stdio.h>
+//==================================================
+// Variáveis Globais e Constantes
+//==================================================
 
-// Inclui a biblioteca matemática para operações matemáticas avançadas
-#include "math.h"
-
-// Inclui a biblioteca de manipulação de strings
-#include <string.h>
-
-// Define a largura da tela do jogo
+// Dimensões da tela
 int screen_width = 1366;
-
-// Define a altura da tela do jogo
 int screen_height = 768;
 
-// Declaração de variáveis estáticas para o efeito de rolagem de fundo
-static const float BG_SCROLL_SPEED = 100.0f; // Velocidade de rolagem do fundo
-static float bg_1y = 0; // Posição Y do primeiro fundo
-static float bg_2y = 0; // Posição Y do segundo fundo
-static bool bg_initialized = false; // Flag para verificar se o fundo foi inicializado
+// Velocidade de rolagem do background e controle do scroll
+static const float BG_SCROLL_SPEED = 100.0f;
+static float bg_1y = 0;             // Posição vertical do fundo 1
+static float bg_2y = 0;             // Posição vertical do fundo 2
+static bool bg_initialized = false; // Flag para indicar se o background foi inicializado
 
-// Declaração da variável delta_time para armazenar o tempo entre os quadros
+// Variável para armazenar o tempo decorrido entre frames
 float delta_time;
 
-// Flags para controlar o estado do aplicativo
-bool stop_app = false; // Flag para parar o aplicativo
-bool pause_app = false; // Flag para pausar o aplicativo
-bool pause_music = false;
+// Flags de controle da aplicação
+bool stop_app = false;    // Controla a saída da aplicação
+bool pause_app = false;   // Controla a pausa do jogo
+bool pause_music = false; // Controla a pausa da música
 
-// Enumeração para representar os diferentes estados do aplicativo
+//==================================================
+// Controle de Estados da Aplicação
+//==================================================
 enum AppState
 {
-    MAIN_MENU,    // Menu principal
-    GAMEPLAY,     // Jogo em andamento
-    SCOREBOARD,   // Tabela de pontuação
-    COMMANDS,     // Comandos
-    CREDITS,      // Créditos
-    EXIT          // Sair do jogo
+    MAIN_MENU,  // Menu principal
+    GAMEPLAY,   // Modo de jogo
+    SCOREBOARD, // Placar
+    COMMANDS,   // Tela de comandos
+    CREDITS,    // Tela de créditos
+    EXIT        // Sair
 };
 
-// Variável para armazenar o estado atual do aplicativo
+// Estado atual da aplicação
 AppState current_app_state = MAIN_MENU;
 
-// Variável para armazenar a opção selecionada no menu
+// Opção atualmente selecionada no menu
 int selected_option = 1;
 
-// Estrutura para representar um temporizador
+//==================================================
+// Estrutura de Timer e Instâncias
+//==================================================
 typedef struct Timer
 {
-    float time;      // Tempo atual do temporizador
+    float time;      // Tempo atual do timer
     float last_time; // Último tempo registrado
 } Timer;
 
-// Instâncias dos temporizadores para o aplicativo, lasers e verificação de pontuação
+// Timers utilizados para navegação, disparos e verificação de pontuação
 Timer app_timer;
 Timer laser_timer;
 Timer score_verifier;
+
+#endif // APP_CONTROLLERS_HPP
