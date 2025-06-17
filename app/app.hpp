@@ -155,7 +155,7 @@ int InitializeApp()
 
                 // Disparo dos lasers
                 laser_timer.real_time = GetTime();
-                if (IsKeyDown(KEY_SPACE) && laser_timer.real_time - laser_timer.last_time > 0.275f)
+                if (IsKeyDown(KEY_SPACE) && laser_timer.real_time - laser_timer.last_time > lasers->interval)
                 {
                     for (int i = 0; i < MAX_LASERS; i++)
                     {

@@ -34,6 +34,7 @@ typedef struct Laser
     Texture2D texture;
     Vector2 position;
     float speed;
+    float interval;
     bool is_active;
     Sound sound;
 } Laser;
@@ -61,6 +62,7 @@ Laser CreateLaserBase(const Player &player)
     laser.texture = LoadTexture("assets/player/laser_texture.png");
     laser.position = {player.position.x + 50, player.position.y - 50};
     laser.speed = 775.0f;
+    laser.interval = 0.275;
     laser.sound = LoadSound("assets/player/laser_sound_effect.ogg");
     return laser;
 }
