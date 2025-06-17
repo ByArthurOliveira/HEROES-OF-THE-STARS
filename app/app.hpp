@@ -14,8 +14,8 @@ int InitializeApp()
     //-----------------------------------------------------------
     // Configurações Iniciais: Janela, Áudio e Flags
     //-----------------------------------------------------------
-    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_TOPMOST);
-    SetTargetFPS(240);
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_TOPMOST | FLAG_MSAA_4X_HINT);
+    SetTargetFPS(360);
     InitWindow(screen_width, screen_height, "HEROES OF THE STARS");
     InitAudioDevice();
     SetExitKey(KEY_NULL); // Desativa a tecla de saída automática
@@ -24,11 +24,12 @@ int InitializeApp()
     // Carregamento de Ativos e Inicialização dos Objetos do Jogo
     //-----------------------------------------------------------
     AppAssets app_assets = CreateAppAssets();
+
     Player player = CreatePlayer();
 
     // Inicializa o array de lasers com o laser base
-    Laser lasers[MAX_LASERS];
     Laser base_laser = CreateLaserBase(player);
+    Laser lasers[MAX_LASERS];
     for (int i = 0; i < MAX_LASERS; i++)
     {
         lasers[i] = base_laser;
@@ -36,24 +37,20 @@ int InitializeApp()
     }
 
     // Configura volumes da música e dos efeitos sonoros
-    SetMusicVolume(app_assets.music_theme, 0.25);
-    SetSoundVolume(app_assets.switch_sound, 0.50);
-
+    SetMusicVolume(app_assets.menu_music_theme, 0.25);
+    SetSoundVolume(app_assets.switch_option_sound, 0.50);
     // Inicia a música de fundo
-    PlayMusicStream(app_assets.music_theme);
-
+    PlayMusicStream(app_assets.menu_music_theme);
     //-----------------------------------------------------------
     // Loop Principal do Jogo
     //-----------------------------------------------------------
     while (!stop_app)
     {
         // Atualiza o tempo de frame
-        delta_time = GetFrameTime();
-
+        frametime = GetFrameTime();
         // Início do desenho da tela
         BeginDrawing();
         ClearBackground(RAYWHITE);
-
         //-----------------------------------------------------------
         // Gerenciamento dos Estados da Aplicação
         //-----------------------------------------------------------
@@ -66,34 +63,34 @@ int InitializeApp()
             if (IsKeyPressed(KEY_M))
                 pause_music = !pause_music;
             if (pause_music)
-                PauseMusicStream(app_assets.music_theme);
+                PauseMusicStream(app_assets.menu_music_theme);
             else
-                ResumeMusicStream(app_assets.music_theme);
-            UpdateMusicStream(app_assets.music_theme);
+                ResumeMusicStream(app_assets.menu_music_theme);
+            UpdateMusicStream(app_assets.menu_music_theme);
 
-            app_timer.time = GetTime();
+            app_timer.real_time = GetTime();
 
             // Navegação do menu principal (opções)
             if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) && selected_option > 1)
             {
-                if (app_timer.time - app_timer.last_time > 0.225f)
+                if (app_timer.real_time - app_timer.last_time > 0.225f)
                 {
-                    app_timer.last_time = app_timer.time;
-                    PlaySound(app_assets.switch_sound);
+                    PlaySound(app_assets.switch_option_sound);
                     selected_option--;
+                    app_timer.last_time = app_timer.real_time;
                 }
             }
             else if ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) && selected_option < 5)
             {
-                if (app_timer.time - app_timer.last_time > 0.225f)
+                if (app_timer.real_time - app_timer.last_time > 0.225f)
                 {
-                    app_timer.last_time = app_timer.time;
-                    PlaySound(app_assets.switch_sound);
+                    PlaySound(app_assets.switch_option_sound);
                     selected_option++;
+                    app_timer.last_time = app_timer.real_time;
                 }
             }
 
-            DrawMainMenu(app_assets.main_menu_background, app_assets.switch_sound);
+            DrawMainMenu(app_assets.menu_background, app_assets.switch_option_sound);
             break;
         }
 
@@ -107,8 +104,8 @@ int InitializeApp()
             // Inicializa os valores do fundo, se ainda não inicializado
             if (!bg_initialized)
             {
-                bg_1y = 0;
-                bg_2y = -app_assets.gameplay_background.height;
+                bg_y1 = 0;
+                bg_y2 = -app_assets.game_background.height;
                 bg_initialized = true;
             }
 
@@ -116,118 +113,79 @@ int InitializeApp()
             if (!pause_app)
             {
                 // Atualiza a pontuação do jogador a cada segundo
-                score_verifier.time = GetTime();
-                if (score_verifier.time - score_verifier.last_time > 1)
+                score_verifier.real_time = GetTime();
+                if (score_verifier.real_time - score_verifier.last_time > 1)
                 {
                     player.score += 1;
-                    score_verifier.last_time = score_verifier.time;
+                    score_verifier.last_time = score_verifier.real_time;
                 }
 
                 // Rolagem do background
-                bg_1y += BG_SCROLL_SPEED * delta_time;
-                bg_2y += BG_SCROLL_SPEED * delta_time;
+                bg_y1 += BG_SCROLL_SPEED * frametime;
+                bg_y2 += BG_SCROLL_SPEED * frametime;
 
-                if (bg_1y >= screen_height)
-                    bg_1y = bg_2y - app_assets.gameplay_background.height;
-                if (bg_2y >= screen_height)
-                    bg_2y = bg_1y - app_assets.gameplay_background.height;
+                if (bg_y1 >= screen_height)
+                    bg_y1 = bg_y2 - app_assets.game_background.height;
+                if (bg_y2 >= screen_height)
+                    bg_y2 = bg_y1 - app_assets.game_background.height;
 
                 // Movimentação do jogador
-                if (IsKeyDown(KEY_W) && player.player_position_Y > 0)
-                    player.player_position_Y -= player.speed * delta_time;
-                if (IsKeyDown(KEY_S) && player.player_position_Y < screen_height - player.player_texture.height)
-                    player.player_position_Y += player.speed * delta_time;
-                if (IsKeyDown(KEY_A) && player.player_position_X > 0)
-                    player.player_position_X -= player.speed * delta_time;
-                if (IsKeyDown(KEY_D) && player.player_position_X < screen_width - player.player_texture.width)
-                    player.player_position_X += player.speed * delta_time;
+                if (IsKeyDown(KEY_W) && player.position.y > 0)
+                    player.position.y -= player.speed * frametime;
+                if (IsKeyDown(KEY_S) && player.position.y < screen_height - player.texture.height)
+                    player.position.y += player.speed * frametime;
+                if (IsKeyDown(KEY_A) && player.position.x > 0)
+                    player.position.x -= player.speed * frametime;
+                if (IsKeyDown(KEY_D) && player.position.x < screen_width - player.texture.width)
+                    player.position.x += player.speed * frametime;
+
+                // Verifica e aplica o boost do jogador
+                if (IsKeyDown(KEY_LEFT_SHIFT) && !IsKeyDown(KEY_S))
+                {
+                    player.boost_active = true;
+                    player.boostleft_position = {player.position.x + 25, player.position.y + 70};
+                    player.boostright_position = {player.position.x + 75, player.position.y + 70};
+                    player.speed = 500;
+                }
+                else
+                {
+                    player.boost_active = false;
+                    player.speed = 250;
+                }
 
                 // Disparo dos lasers
-                laser_timer.time = GetTime();
-                if (IsKeyDown(KEY_SPACE) && laser_timer.time - laser_timer.last_time > 0.275f)
+                laser_timer.real_time = GetTime();
+                if (IsKeyDown(KEY_SPACE) && laser_timer.real_time - laser_timer.last_time > 0.275f)
                 {
                     for (int i = 0; i < MAX_LASERS; i++)
                     {
                         if (!lasers[i].is_active)
                         {
-                            lasers[i].laser_texture_X = player.player_position_X + 50;
-                            lasers[i].laser_texture_Y = player.player_position_Y - 50;
+                            lasers[i].position.x = player.position.x + 50;
+                            lasers[i].position.y = player.position.y - 50;
                             lasers[i].is_active = true;
-                            PlaySound(lasers[i].laser_sound);
-                            laser_timer.last_time = laser_timer.time;
+                            PlaySound(lasers[i].sound);
+                            laser_timer.last_time = laser_timer.real_time;
                             break;
                         }
                     }
                 }
-
                 // Atualiza a posição dos lasers ativos
                 for (int i = 0; i < MAX_LASERS; i++)
                 {
                     if (lasers[i].is_active)
                     {
-                        lasers[i].laser_texture_Y -= lasers[i].laser_speed * delta_time;
-                        if (lasers[i].laser_texture_Y + lasers[i].laser_texture.height < 0)
+                        lasers[i].position.y -= lasers[i].speed * frametime;
+                        if (lasers[i].position.y + lasers[i].texture.height < 0)
                             lasers[i].is_active = false;
                     }
                 }
-
-                // Verifica e aplica o boost do jogador
-                if (IsKeyDown(KEY_LEFT_SHIFT) && !IsKeyDown(KEY_S))
-                {
-                    player.player_boost_texture_X0 = player.player_position_X + 25;
-                    player.player_boost_texture_Y0 = player.player_position_Y + 70;
-                    player.player_boost_texture_X1 = player.player_position_X + 75;
-                    player.player_boost_texture_Y1 = player.player_position_Y + 70;
-                    player.speed = 450.0f;
-                }
-                else
-                {
-                    player.speed = 250.0f;
-                }
             }
 
-            // Desenha os dois fundos para criar o efeito de rolagem
-            DrawTexture(app_assets.gameplay_background, 0, (int)bg_1y, WHITE);
-            DrawTexture(app_assets.gameplay_background, 0, (int)bg_2y, WHITE);
-
-            DrawTextEx(app_assets.font, "SCORE:", {1150, 25}, 25, 0, GOLD);
-            DrawTextEx(app_assets.font, TextFormat("%i", player.score), {1250, 25}, 25, 1, GOLD);
-
-            DrawTexture(app_assets.lives_counter, 25, 25, WHITE);
-            DrawTexture(app_assets._X, 70, 30, WHITE);
-            switch (player.health)
-            {
-            case 0:
-                DrawTexture(app_assets.numbers[0], 95, 30, WHITE);
-                break;
-            case 1:
-                DrawTexture(app_assets.numbers[1], 95, 30, WHITE);
-                break;
-            case 2:
-                DrawTexture(app_assets.numbers[2], 95, 30, WHITE);
-                break;
-            case 3:
-                DrawTexture(app_assets.numbers[3], 95, 30, WHITE);
-            }
-
-            // Desenha o jogador e o efeito de boost, se aplicável
-            DrawTexture(player.player_texture, player.player_position_X, player.player_position_Y, WHITE);
-            if ((IsKeyDown(KEY_LEFT_SHIFT) && !IsKeyDown(KEY_S)) && !pause_app)
-            {
-                DrawTexture(player.player_boost_texture, player.player_boost_texture_X0, player.player_boost_texture_Y0, WHITE);
-                DrawTexture(player.player_boost_texture, player.player_boost_texture_X1, player.player_boost_texture_Y1, WHITE);
-            }
-
-            // Desenha todos os lasers ativos
-            for (int i = 0; i < MAX_LASERS; i++)
-            {
-                if (lasers[i].is_active)
-                    DrawTexture(lasers[i].laser_texture, lasers[i].laser_texture_X, lasers[i].laser_texture_Y, WHITE);
-            }
-
-            // Exibe mensagem de pausa, se o jogo estiver pausado
+            DrawGameplay(app_assets, player, lasers);
             if (pause_app)
             {
+                //DrawTexture(app_assets.blur,0,0,LIGHTGRAY);
                 DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);
                 DrawText("PRESSIONE ESC PARA CONTINUAR!", 75, 450, 25, GOLD);
             }
@@ -240,15 +198,15 @@ int InitializeApp()
             if (IsKeyPressed(KEY_M))
                 pause_music = !pause_music;
             if (pause_music)
-                PauseMusicStream(app_assets.music_theme);
+                PauseMusicStream(app_assets.menu_music_theme);
             else
-                ResumeMusicStream(app_assets.music_theme);
-            UpdateMusicStream(app_assets.music_theme);
+                ResumeMusicStream(app_assets.menu_music_theme);
+            UpdateMusicStream(app_assets.menu_music_theme);
 
             if (IsKeyPressed(KEY_ESCAPE))
                 current_app_state = MAIN_MENU;
 
-            DrawScoreboard(app_assets.main_menu_background);
+            DrawScoreboard(app_assets.menu_background);
             break;
         }
 
@@ -258,15 +216,15 @@ int InitializeApp()
             if (IsKeyPressed(KEY_M))
                 pause_music = !pause_music;
             if (pause_music)
-                PauseMusicStream(app_assets.music_theme);
+                PauseMusicStream(app_assets.menu_music_theme);
             else
-                ResumeMusicStream(app_assets.music_theme);
-            UpdateMusicStream(app_assets.music_theme);
+                ResumeMusicStream(app_assets.menu_music_theme);
+            UpdateMusicStream(app_assets.menu_music_theme);
 
             if (IsKeyPressed(KEY_ESCAPE))
                 current_app_state = MAIN_MENU;
 
-            DrawCommands(app_assets.main_menu_background);
+            DrawCommands(app_assets.menu_background);
             break;
         }
 
@@ -276,15 +234,15 @@ int InitializeApp()
             if (IsKeyPressed(KEY_M))
                 pause_music = !pause_music;
             if (pause_music)
-                PauseMusicStream(app_assets.music_theme);
+                PauseMusicStream(app_assets.menu_music_theme);
             else
-                ResumeMusicStream(app_assets.music_theme);
-            UpdateMusicStream(app_assets.music_theme);
+                ResumeMusicStream(app_assets.menu_music_theme);
+            UpdateMusicStream(app_assets.menu_music_theme);
 
             if (IsKeyPressed(KEY_ESCAPE))
                 current_app_state = MAIN_MENU;
 
-            DrawCredits(app_assets.main_menu_background);
+            DrawCredits(app_assets.menu_background);
             break;
         }
 
@@ -297,7 +255,7 @@ int InitializeApp()
         } // Fim do switch de estados
 
         // Exibe os FPS no canto da tela
-        DrawFPS(10, 10);
+        DrawFPS(5, 5);
         EndDrawing();
     } // Fim do loop principal do jogo
 
@@ -306,20 +264,15 @@ int InitializeApp()
     //-----------------------------------------------------------
     for (int i = 0; i < MAX_LASERS; i++)
     {
-        if (i == 0)
-        {
-            UnloadTexture(lasers[i].laser_texture);
-            UnloadSound(lasers[i].laser_sound);
-        }
+        UnloadTexture(lasers[i].texture);
+        UnloadSound(lasers[i].sound);
     }
-    UnloadTexture(player.player_boost_texture);
-    UnloadTexture(player.player_texture);
-    UnloadSound(app_assets.switch_sound);
-    UnloadTexture(app_assets.gameplay_background);
-    UnloadTexture(app_assets.main_menu_background);
-
+    UnloadTexture(player.boost_texture);
+    UnloadTexture(player.texture);
+    UnloadSound(app_assets.switch_option_sound);
+    UnloadTexture(app_assets.game_background);
+    UnloadTexture(app_assets.menu_background);
     CloseWindow();
     return 0;
 }
-
 #endif // APP_HPP

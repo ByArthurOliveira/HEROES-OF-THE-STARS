@@ -5,14 +5,15 @@
 // Bibliotecas Padrão
 //==================================================
 #include <stdio.h>
-#include <string.h>
-#include "math.h" // Utilizado para funções matemáticas
 
 //==================================================
 // Bibliotecas de Terceiros e Projeto
 //==================================================
 #include "raylib.h"
+#include "app_assets.hpp"
+
 #include "lib/player/player.hpp"
+#include "lib/asteroids/asteroids.hpp"
 
 //==================================================
 // Variáveis Globais e Constantes
@@ -23,13 +24,13 @@ int screen_width = 1366;
 int screen_height = 768;
 
 // Velocidade de rolagem do background e controle do scroll
-static const float BG_SCROLL_SPEED = 100.0f;
-static float bg_1y = 0;             // Posição vertical do fundo 1
-static float bg_2y = 0;             // Posição vertical do fundo 2
+static const float BG_SCROLL_SPEED = 125.0f;
+static float bg_y1 = 0;             // Posição vertical do fundo 1
+static float bg_y2 = 0;             // Posição vertical do fundo 2
 static bool bg_initialized = false; // Flag para indicar se o background foi inicializado
 
 // Variável para armazenar o tempo decorrido entre frames
-float delta_time;
+float frametime;
 
 // Flags de controle da aplicação
 bool stop_app = false;    // Controla a saída da aplicação
@@ -60,7 +61,7 @@ int selected_option = 1;
 //==================================================
 typedef struct Timer
 {
-    float time;      // Tempo atual do timer
+    float real_time; // Tempo atual do timer
     float last_time; // Último tempo registrado
 } Timer;
 
