@@ -22,10 +22,13 @@ int InitializeApp()
 
     //-----------------------------------------------------------
     // Carregamento de Ativos e Inicialização dos Objetos do Jogo
-    //-----------------------------------------------------------
+
     AppAssets app_assets = CreateAppAssets();
+    //-----------------------------------------------------------
 
     Player player = CreatePlayer();
+
+    PowerUP power_up = CreatePowerUP();
 
     // Inicializa o array de lasers com o laser base
     Laser base_laser = CreateLaserBase(player);
@@ -129,6 +132,12 @@ int InitializeApp()
                 if (bg_y2 >= screen_height)
                     bg_y2 = bg_y1 - app_assets.game_background.height;
 
+                if (CheckCollisionRecs(player.hit_box, power_up.hit_box))
+                {
+                    power_up.was_catched = true;
+                    lasers->interval = 0.1;
+                }
+
                 // Movimentação do jogador
                 if (IsKeyDown(KEY_W) && player.position.y > 0)
                     player.position.y -= player.speed * frametime;
@@ -182,7 +191,7 @@ int InitializeApp()
                 }
             }
 
-            DrawGameplay(app_assets, player, lasers);
+            DrawGameplay(app_assets, player, lasers,power_up);
             if (pause_app)
             {
                 DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);
@@ -205,7 +214,7 @@ int InitializeApp()
             if (IsKeyPressed(KEY_ESCAPE))
                 current_app_state = MAIN_MENU;
 
-            DrawScoreboard(app_assets.menu_background,app_assets.blur);
+            DrawScoreboard(app_assets.menu_background, app_assets.blur);
             break;
         }
 
@@ -223,7 +232,7 @@ int InitializeApp()
             if (IsKeyPressed(KEY_ESCAPE))
                 current_app_state = MAIN_MENU;
 
-            DrawCommands(app_assets.menu_background,app_assets.blur);
+            DrawCommands(app_assets.menu_background, app_assets.blur);
             break;
         }
 
@@ -241,7 +250,7 @@ int InitializeApp()
             if (IsKeyPressed(KEY_ESCAPE))
                 current_app_state = MAIN_MENU;
 
-            DrawCredits(app_assets.menu_background,app_assets.blur);
+            DrawCredits(app_assets.menu_background, app_assets.blur);
             break;
         }
 

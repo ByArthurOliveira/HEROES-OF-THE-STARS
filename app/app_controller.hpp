@@ -13,6 +13,7 @@
 #include "app_assets.hpp"
 
 #include "lib/player/player.hpp"
+#include "lib/enemies/enemies.hpp"
 #include "lib/asteroids/asteroids.hpp"
 
 //==================================================

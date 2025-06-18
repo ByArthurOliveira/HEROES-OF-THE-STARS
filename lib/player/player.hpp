@@ -16,6 +16,7 @@ typedef struct Player
     // Textura e posição do jogador
     Texture2D texture;
     Vector2 position;
+    Rectangle hit_box;
 
     // Propriedades do jogador
     float speed;
@@ -33,11 +34,21 @@ typedef struct Laser
 {
     Texture2D texture;
     Vector2 position;
+    Rectangle hit_box;
     float speed;
     float interval;
     bool is_active;
     Sound sound;
 } Laser;
+
+typedef struct PowerUP
+{
+    Texture2D texture;
+    Vector2 position;
+    Rectangle hit_box;
+    int time_remaining;
+    bool was_catched;
+} PowerUP;
 
 // Função para criar e inicializar o jogador
 Player CreatePlayer()
@@ -52,6 +63,7 @@ Player CreatePlayer()
     player.boostleft_position = {player.position.x + 25, player.position.y + 70};
     player.boostright_position = {player.position.x + 75, player.position.y + 70};
     player.boost_active = false;
+    player.hit_box = {player.position.x, player.position.y, float(player.texture.width), float(player.texture.height)};
     return player;
 }
 // Função para criar e inicializar um laser com base na posição do jogador
@@ -64,6 +76,19 @@ Laser CreateLaserBase(const Player &player)
     laser.speed = 775.0f;
     laser.interval = 0.275;
     laser.sound = LoadSound("assets/player/laser_sound_effect.ogg");
+    laser.hit_box = {laser.position.x, laser.position.y, float(laser.texture.width), float(laser.texture.height)};
     return laser;
 }
+
+PowerUP CreatePowerUP()
+{
+    PowerUP power_up;
+    power_up.texture = LoadTexture("assets/player/power_up_texture.png");
+    power_up.position = {
+        (float)GetRandomValue(power_up.texture.width, 1366 - power_up.texture.width), (float)GetRandomValue(power_up.texture.height, 768 - power_up.texture.height)};
+    power_up.time_remaining = 10;
+    power_up.was_catched = false;
+    power_up.hit_box = {power_up.position.x, power_up.position.y, float(power_up.texture.width), float(power_up.texture.height)};
+    return power_up;
+};
 #endif // PLAYER_HPP

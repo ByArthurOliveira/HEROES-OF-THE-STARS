@@ -77,10 +77,10 @@ void DrawMainMenu(Texture2D menu_background, Texture2D blur, Sound switch_sound)
     }
 }
 
-void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[])
+void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP power_up)
 {
-    DrawTexture(app_assets.game_background, 0, (int)bg_y1, WHITE);
-    DrawTexture(app_assets.game_background, 0, (int)bg_y2, WHITE);
+    DrawTexture(app_assets.game_background, 0, (int)bg_y1, GRAY);
+    DrawTexture(app_assets.game_background, 0, (int)bg_y2, GRAY);
 
     DrawText("SCORE:", 1150, 25, 25, GOLD);
     DrawText(TextFormat("%i", player.score), 1250, 25, 25, GOLD);
@@ -102,6 +102,9 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[])
         DrawTexture(app_assets.numbers[3], 95, 30, WHITE);
     }
 
+    if(!power_up.was_catched){
+        DrawTexture(power_up.texture, power_up.position.x, power_up.position.y, WHITE);
+    }
     DrawTexture(player.texture, player.position.x, player.position.y, WHITE);
     if (player.boost_active)
     {
@@ -119,7 +122,7 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[])
 // Função: DrawScoreboard
 // Descrição: Renderiza a tela do placar utilizando o background principal.
 //-----------------------------------------------------------------
-void DrawScoreboard(Texture2D menu_background,Texture2D blur)
+void DrawScoreboard(Texture2D menu_background, Texture2D blur)
 {
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
     DrawTexture(blur, 0, 0, LIGHTGRAY);
@@ -128,7 +131,7 @@ void DrawScoreboard(Texture2D menu_background,Texture2D blur)
 // Função: DrawCommands
 // Descrição: Renderiza a tela que exibe os comandos do jogo.
 //-----------------------------------------------------------------
-void DrawCommands(Texture2D menu_background,Texture2D blur)
+void DrawCommands(Texture2D menu_background, Texture2D blur)
 {
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
     DrawTexture(blur, 0, 0, LIGHTGRAY);
@@ -137,7 +140,7 @@ void DrawCommands(Texture2D menu_background,Texture2D blur)
 // Função: DrawCredits
 // Descrição: Renderiza a tela com os créditos do jogo.
 //-----------------------------------------------------------------
-void DrawCredits(Texture2D menu_background,Texture2D blur)
+void DrawCredits(Texture2D menu_background, Texture2D blur)
 {
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
     DrawTexture(blur, 0, 0, LIGHTGRAY);
