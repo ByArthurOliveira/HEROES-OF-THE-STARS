@@ -105,6 +105,7 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP p
     if(!power_up.was_catched){
         DrawTexture(power_up.texture, power_up.position.x, power_up.position.y, WHITE);
     }
+
     DrawTexture(player.texture, player.position.x, player.position.y, WHITE);
     if (player.boost_active)
     {

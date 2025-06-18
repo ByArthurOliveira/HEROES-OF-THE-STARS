@@ -132,11 +132,8 @@ int InitializeApp()
                 if (bg_y2 >= screen_height)
                     bg_y2 = bg_y1 - app_assets.game_background.height;
 
-                if (CheckCollisionRecs(player.hit_box, power_up.hit_box))
-                {
-                    power_up.was_catched = true;
-                    lasers->interval = 0.1;
-                }
+                
+                
 
                 // Movimentação do jogador
                 if (IsKeyDown(KEY_W) && player.position.y > 0)
@@ -160,6 +157,12 @@ int InitializeApp()
                 {
                     player.boost_active = false;
                     player.speed = 250;
+                }
+                player.hit_box = {player.position.x, player.position.y, float(player.texture.width),float(player.texture.height)};
+
+                if(CheckCollisionRecs(player.hit_box,power_up.hit_box)){
+                    power_up.was_catched = true;
+                    lasers->interval = 0.1;
                 }
 
                 // Disparo dos lasers
