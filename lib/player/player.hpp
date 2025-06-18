@@ -46,6 +46,7 @@ typedef struct PowerUP
     Texture2D texture;
     Vector2 position;
     Rectangle hit_box;
+    float fall_speed;
     int time_remaining;
     bool was_catched;
 } PowerUP;
@@ -85,8 +86,9 @@ PowerUP CreatePowerUP()
     PowerUP power_up;
     power_up.texture = LoadTexture("assets/player/power_up_texture.png");
     power_up.position = {
-        (float)GetRandomValue(power_up.texture.width, 1366 - power_up.texture.width), (float)GetRandomValue(power_up.texture.height, 768 - power_up.texture.height)};
+        float(GetRandomValue(power_up.texture.width, 1366 - (5 * power_up.texture.width))), float(-power_up.texture.height)};
     power_up.time_remaining = 10;
+    power_up.fall_speed = 500;
     power_up.was_catched = false;
     power_up.hit_box = {power_up.position.x, power_up.position.y, float(power_up.texture.width), float(power_up.texture.height)};
     return power_up;

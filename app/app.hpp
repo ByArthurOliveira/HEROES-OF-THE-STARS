@@ -132,9 +132,6 @@ int InitializeApp()
                 if (bg_y2 >= screen_height)
                     bg_y2 = bg_y1 - app_assets.game_background.height;
 
-                
-                
-
                 // Movimentação do jogador
                 if (IsKeyDown(KEY_W) && player.position.y > 0)
                     player.position.y -= player.speed * frametime;
@@ -158,11 +155,48 @@ int InitializeApp()
                     player.boost_active = false;
                     player.speed = 250;
                 }
-                player.hit_box = {player.position.x, player.position.y, float(player.texture.width),float(player.texture.height)};
+                player.hit_box = {player.position.x, player.position.y, float(player.texture.width), float(player.texture.height)};
 
-                if(CheckCollisionRecs(player.hit_box,power_up.hit_box)){
+                if (CheckCollisionRecs(player.hit_box, power_up.hit_box))
+                {
                     power_up.was_catched = true;
+                    power_up.time_remaining = 10;
+                    power_up.position = {
+                        float(GetRandomValue(power_up.texture.width, 1366 - (5 * power_up.texture.width))), float(-power_up.texture.height)};
+                    power_up.hit_box = {power_up.position.x, power_up.position.y, float(power_up.texture.width), float(power_up.texture.height)};
+                }
+                if (power_up.was_catched == false && power_up.hit_box.y > float(screen_height))
+                {
+                    power_up_respawn.real_time = GetTime();
+                    if (power_up_respawn.real_time - power_up_respawn.last_time > 35)
+                    {
+                        power_up.position = {
+                            float(GetRandomValue(power_up.texture.width, 1366 - (5 * power_up.texture.width))), float(-power_up.texture.height)};
+                        power_up.hit_box = {power_up.position.x, power_up.position.y, float(power_up.texture.width), float(power_up.texture.height)};
+                        power_up_respawn.last_time = power_up_respawn.real_time;
+                    }
+                }
+                power_up.position.y += power_up.fall_speed * frametime;
+                power_up.hit_box = {power_up.position.x, power_up.position.y, float(power_up.texture.width), float(power_up.texture.height)};
+
+                power_up_timer.real_time = GetTime();
+                if (power_up_timer.real_time - power_up_timer.last_time > 1)
+                {
+                    power_up.time_remaining -= 1;
+                    power_up_timer.last_time = power_up_timer.real_time;
+                }
+                if (power_up.time_remaining <= 0)
+                {
+                    power_up.was_catched = false;
+                }
+
+                if (power_up.was_catched)
+                {
                     lasers->interval = 0.1;
+                }
+                else
+                {
+                    lasers->interval = base_laser.interval;
                 }
 
                 // Disparo dos lasers
@@ -194,7 +228,7 @@ int InitializeApp()
                 }
             }
 
-            DrawGameplay(app_assets, player, lasers,power_up);
+            DrawGameplay(app_assets, player, lasers, power_up);
             if (pause_app)
             {
                 DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);

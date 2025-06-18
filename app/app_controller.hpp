@@ -64,11 +64,14 @@ typedef struct Timer
 {
     float real_time; // Tempo atual do timer
     float last_time; // Último tempo registrado
+    float interval;
 } Timer;
 
 // Timers utilizados para navegação, disparos e verificação de pontuação
 Timer app_timer;
-Timer laser_timer;
 Timer score_verifier;
+Timer laser_timer;
+Timer power_up_respawn;
+Timer power_up_timer;
 
 #endif // APP_CONTROLLERS_HPP
