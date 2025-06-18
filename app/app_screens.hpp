@@ -77,7 +77,7 @@ void DrawMainMenu(Texture2D menu_background, Texture2D blur, Sound switch_sound)
     }
 }
 
-void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP power_up)
+void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP power_up, AsteroidManager asteroid_manager)
 {
     DrawTexture(app_assets.game_background, 0, (int)bg_y1, GRAY);
     DrawTexture(app_assets.game_background, 0, (int)bg_y2, GRAY);
@@ -102,10 +102,15 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP p
         DrawTexture(app_assets.numbers[3], 95, 30, WHITE);
     }
 
+    DrawDifficultyInfo(&asteroid_manager);
+
     if (!power_up.was_catched)
     {
         DrawTexture(power_up.texture, power_up.position.x, power_up.position.y, WHITE);
     }
+
+    // Desenha os asteroides
+    DrawAsteroids(&asteroid_manager);
 
     DrawTexture(player.texture, player.position.x, player.position.y, WHITE);
     if (player.boost_active)

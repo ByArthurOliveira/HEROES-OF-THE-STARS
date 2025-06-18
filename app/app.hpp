@@ -30,6 +30,9 @@ int InitializeApp()
 
     PowerUP power_up = CreatePowerUP();
 
+    // Inicializa o gerenciador de asteroides
+    AsteroidManager asteroid_manager = CreateAsteroidManager();
+
     // Inicializa o array de lasers com o laser base
     Laser base_laser = CreateLaserBase(player);
     Laser lasers[MAX_LASERS];
@@ -157,6 +160,7 @@ int InitializeApp()
                 }
                 player.hit_box = {player.position.x, player.position.y, float(player.texture.width), float(player.texture.height)};
 
+                // Sistema de PowerUP
                 if (CheckCollisionRecs(player.hit_box, power_up.hit_box))
                 {
                     power_up.was_catched = true;
@@ -226,9 +230,37 @@ int InitializeApp()
                             lasers[i].is_active = false;
                     }
                 }
+
+                // Atualiza sistema de asteroides
+                int points_lost = UpdateAsteroids(&asteroid_manager, frametime, screen_width, screen_height);
+                player.score -= points_lost; // Subtrai pontos perdidos
+                if (player.score < 0)
+                    player.score = 0;
+
+                // Verifica colisões laser-asteroide
+                int asteroid_score = CheckAsteroidLaserCollisions(&asteroid_manager, lasers, MAX_LASERS);
+                player.score += asteroid_score;
+
+                // Verifica colisões jogador-asteroide
+                if (CheckAsteroidPlayerCollision(&asteroid_manager, player.hit_box))
+                {
+                    player.health--;
+                    if (player.health <= 0)
+                    {
+                        // Game Over - volta para o menu
+                        // GAMEOVER == adicionar aqui para salvar o placar do player
+                        current_app_state = MAIN_MENU;
+                        // Reset do jogo
+                        player.health = 3;
+                        player.score = 0;
+                        player.position = {683, 600};
+                        // Limpa asteroides
+                        ResetAsteroidManager(&asteroid_manager);
+                    }
+                }
             }
 
-            DrawGameplay(app_assets, player, lasers, power_up);
+            DrawGameplay(app_assets, player, lasers, power_up, asteroid_manager);
             if (pause_app)
             {
                 DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);
@@ -252,6 +284,7 @@ int InitializeApp()
                 current_app_state = MAIN_MENU;
 
             DrawScoreboard(app_assets.menu_background, app_assets.blur);
+            DrawDifficultyInfo(&asteroid_manager);
             break;
         }
 
@@ -314,6 +347,7 @@ int InitializeApp()
     UnloadSound(app_assets.switch_option_sound);
     UnloadTexture(app_assets.game_background);
     UnloadTexture(app_assets.menu_background);
+    UnloadAsteroidManager(&asteroid_manager);
     CloseWindow();
     return 0;
 }
