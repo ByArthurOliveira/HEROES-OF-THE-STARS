@@ -72,7 +72,7 @@ int InitializeApp(char username[])
                 }
             }
 
-            DrawMainMenu(app_assets.menu_background, app_assets.blur, app_assets.switch_option_sound, app_assets.font);
+            DrawMainMenu(app_assets, player, power_up);
             break;
         }
 
