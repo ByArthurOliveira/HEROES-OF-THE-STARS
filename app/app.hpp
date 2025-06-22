@@ -16,31 +16,30 @@ int InitializeApp()
     //-----------------------------------------------------------
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_TOPMOST | FLAG_MSAA_4X_HINT);
     SetTargetFPS(360);
-    InitWindow(screen_width, screen_height, "HEROES OF THE STARS");
+    InitWindow(1366, 768, "HEROES OF THE STARS");
     InitAudioDevice();
     SetExitKey(KEY_NULL); // Desativa a tecla de saída automática
 
+    SetRandomSeed((unsigned int)GetTime());
+
     //-----------------------------------------------------------
     // Carregamento de Ativos e Inicialização dos Objetos do Jogo
-
     AppAssets app_assets = CreateAppAssets();
     //-----------------------------------------------------------
-
     Player player = CreatePlayer();
+
+    Laser laser_template = CreateLaserBase(player);
+    Laser lasers[MAX_LASERS];
+    for (int i = 0; i < MAX_LASERS; i++)
+    {
+        lasers[i] = laser_template;
+        lasers[i].is_active = false;
+    }
 
     PowerUP power_up = CreatePowerUP();
 
     // Inicializa o gerenciador de asteroides
     AsteroidManager asteroid_manager = CreateAsteroidManager();
-
-    // Inicializa o array de lasers com o laser base
-    Laser base_laser = CreateLaserBase(player);
-    Laser lasers[MAX_LASERS];
-    for (int i = 0; i < MAX_LASERS; i++)
-    {
-        lasers[i] = base_laser;
-        lasers[i].is_active = false;
-    }
 
     // Configura volumes da música e dos efeitos sonoros
     SetMusicVolume(app_assets.menu_music_theme, 0.25);
@@ -52,8 +51,6 @@ int InitializeApp()
     //-----------------------------------------------------------
     while (!stop_app)
     {
-        // Atualiza o tempo de frame
-        frametime = GetFrameTime();
         // Início do desenho da tela
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -107,14 +104,6 @@ int InitializeApp()
             if (IsKeyPressed(KEY_ESCAPE))
                 pause_app = !pause_app;
 
-            // Inicializa os valores do fundo, se ainda não inicializado
-            if (!bg_initialized)
-            {
-                bg_y1 = 0;
-                bg_y2 = -app_assets.game_background.height;
-                bg_initialized = true;
-            }
-
             // Atualiza lógicas do jogo apenas se não estiver em pausa
             if (!pause_app)
             {
@@ -127,61 +116,30 @@ int InitializeApp()
                 }
 
                 // Rolagem do background
-                bg_y1 += BG_SCROLL_SPEED * frametime;
-                bg_y2 += BG_SCROLL_SPEED * frametime;
-
-                if (bg_y1 >= screen_height)
-                    bg_y1 = bg_y2 - app_assets.game_background.height;
-                if (bg_y2 >= screen_height)
-                    bg_y2 = bg_y1 - app_assets.game_background.height;
+                UpdateGameBackground(app_assets.game_background, bg_y1, bg_y2, BG_SCROLL_SPEED, bg_initialized);
 
                 // Movimentação do jogador
-                if (IsKeyDown(KEY_W) && player.position.y > 0)
-                    player.position.y -= player.speed * frametime;
-                if (IsKeyDown(KEY_S) && player.position.y < screen_height - player.texture.height)
-                    player.position.y += player.speed * frametime;
-                if (IsKeyDown(KEY_A) && player.position.x > 0)
-                    player.position.x -= player.speed * frametime;
-                if (IsKeyDown(KEY_D) && player.position.x < screen_width - player.texture.width)
-                    player.position.x += player.speed * frametime;
+                UpdatePlayer(player);
 
-                // Verifica e aplica o boost do jogador
-                if (IsKeyDown(KEY_LEFT_SHIFT) && !IsKeyDown(KEY_S))
+                // Sistema de PowerUP
+                CheckPowerUPCollision(power_up, player);
+                if (!power_up.is_on_screen)
                 {
-                    player.boost_active = true;
-                    player.boostleft_position = {player.position.x + 25, player.position.y + 70};
-                    player.boostright_position = {player.position.x + 75, player.position.y + 70};
-                    player.speed = 500;
+                    int chance = GetRandomValue(0, 4800); // 0.1% de chance por frame
+                    if (chance == 0)
+                    {
+                        power_up = CreatePowerUP();
+                        power_up.is_on_screen = true;
+                    }
                 }
                 else
                 {
-                    player.boost_active = false;
-                    player.speed = 250;
-                }
-                player.hit_box = {player.position.x, player.position.y, float(player.texture.width), float(player.texture.height)};
-
-                // Sistema de PowerUP
-                if (CheckCollisionRecs(player.hit_box, power_up.hit_box))
-                {
-                    power_up.was_catched = true;
-                    power_up.time_remaining = 10;
-                    power_up.position = {
-                        float(GetRandomValue(power_up.texture.width, 1366 - (5 * power_up.texture.width))), float(-power_up.texture.height)};
-                    power_up.hit_box = {power_up.position.x, power_up.position.y, float(power_up.texture.width), float(power_up.texture.height)};
-                }
-                if (power_up.was_catched == false && power_up.hit_box.y > float(screen_height))
-                {
-                    power_up_respawn.real_time = GetTime();
-                    if (power_up_respawn.real_time - power_up_respawn.last_time > 35)
+                    UpdatePowerUP(power_up);
+                    if (power_up.position.y > GetScreenHeight() + power_up.texture.height)
                     {
-                        power_up.position = {
-                            float(GetRandomValue(power_up.texture.width, 1366 - (5 * power_up.texture.width))), float(-power_up.texture.height)};
-                        power_up.hit_box = {power_up.position.x, power_up.position.y, float(power_up.texture.width), float(power_up.texture.height)};
-                        power_up_respawn.last_time = power_up_respawn.real_time;
+                        power_up.is_on_screen = false;
                     }
                 }
-                power_up.position.y += power_up.fall_speed * frametime;
-                power_up.hit_box = {power_up.position.x, power_up.position.y, float(power_up.texture.width), float(power_up.texture.height)};
 
                 power_up_timer.real_time = GetTime();
                 if (power_up_timer.real_time - power_up_timer.last_time > 1)
@@ -193,46 +151,19 @@ int InitializeApp()
                 {
                     power_up.was_catched = false;
                 }
-
-                if (power_up.was_catched)
-                {
-                    lasers->interval = 0.1;
-                }
-                else
-                {
-                    lasers->interval = base_laser.interval;
-                }
+                SetLaserInterval(power_up, lasers);
 
                 // Disparo dos lasers
                 laser_timer.real_time = GetTime();
                 if (IsKeyDown(KEY_SPACE) && laser_timer.real_time - laser_timer.last_time > lasers->interval)
                 {
-                    for (int i = 0; i < MAX_LASERS; i++)
-                    {
-                        if (!lasers[i].is_active)
-                        {
-                            lasers[i].position.x = player.position.x + 50;
-                            lasers[i].position.y = player.position.y - 50;
-                            lasers[i].is_active = true;
-                            PlaySound(lasers[i].sound);
-                            laser_timer.last_time = laser_timer.real_time;
-                            break;
-                        }
-                    }
+                    SpawnLaser(lasers, player);
+                    laser_timer.last_time = laser_timer.real_time;
                 }
-                // Atualiza a posição dos lasers ativos
-                for (int i = 0; i < MAX_LASERS; i++)
-                {
-                    if (lasers[i].is_active)
-                    {
-                        lasers[i].position.y -= lasers[i].speed * frametime;
-                        if (lasers[i].position.y + lasers[i].texture.height < 0)
-                            lasers[i].is_active = false;
-                    }
-                }
+                UpdateLaser(lasers);
 
                 // Atualiza sistema de asteroides
-                int points_lost = UpdateAsteroids(&asteroid_manager, frametime, screen_width, screen_height);
+                int points_lost = UpdateAsteroids(&asteroid_manager, GetFrameTime(), GetScreenWidth(), GetScreenHeight());
                 player.score -= points_lost; // Subtrai pontos perdidos
                 if (player.score < 0)
                     player.score = 0;
@@ -284,7 +215,6 @@ int InitializeApp()
                 current_app_state = MAIN_MENU;
 
             DrawScoreboard(app_assets.menu_background, app_assets.blur);
-            DrawDifficultyInfo(&asteroid_manager);
             break;
         }
 

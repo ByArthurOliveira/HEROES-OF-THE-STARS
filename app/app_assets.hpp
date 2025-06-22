@@ -46,4 +46,25 @@ AppAssets CreateAppAssets()
     return assets;
 }
 
+void UpdateGameBackground(Texture2D game_background, float &bg_y1, float &bg_y2, float &BG_SCROLL_SPEED, bool &bg_initialized)
+{
+    // Verifica se o fundo já foi inicializado
+    if (!bg_initialized)
+    {
+        bg_y1 = 0;
+        bg_y2 = -game_background.height;
+        bg_initialized = true;
+    }
+
+    bg_y1 += BG_SCROLL_SPEED * GetFrameTime();
+    bg_y2 += BG_SCROLL_SPEED * GetFrameTime();
+
+    // Verifica se o fundo 1 saiu da tela e reposiciona
+    if (bg_y1 >= GetScreenHeight())
+        bg_y1 = bg_y2 - game_background.height;
+
+    // Verifica se o fundo 2 saiu da tela e reposiciona
+    if (bg_y2 >= GetScreenHeight())
+        bg_y2 = bg_y1 - game_background.height;
+}
 #endif // APP_ASSETS
