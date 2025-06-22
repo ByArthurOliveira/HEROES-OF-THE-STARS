@@ -101,7 +101,7 @@ int InitializeApp()
         case GAMEPLAY:
         {
             // Alterna o modo pausa do jogo
-            if (IsKeyPressed(KEY_ESCAPE))
+            if (IsKeyPressed(KEY_ESCAPE) && player.health > 0)
                 pause_app = !pause_app;
 
             // Atualiza lógicas do jogo apenas se não estiver em pausa
@@ -178,24 +178,33 @@ int InitializeApp()
                     player.health--;
                     if (player.health <= 0)
                     {
-                        // Game Over - volta para o menu
-                        // GAMEOVER == adicionar aqui para salvar o placar do player
-                        current_app_state = MAIN_MENU;
-                        // Reset do jogo
-                        player.health = 3;
-                        player.score = 0;
-                        player.position = {683, 600};
-                        // Limpa asteroides
-                        ResetAsteroidManager(&asteroid_manager);
+                        pause_app = true;
+                        if (IsKeyPressed(KEY_ESCAPE))
+                            pause_app = true;
                     }
                 }
             }
 
             DrawGameplay(app_assets, player, lasers, power_up, asteroid_manager);
-            if (pause_app)
+            if (pause_app == true && player.health > 0)
             {
                 DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);
                 DrawText("PRESSIONE ESC PARA CONTINUAR!", 75, 450, 25, GOLD);
+            }
+            else if (pause_app == true && player.health <= 0)
+            {
+                DrawText("GAME OVER", 75, 400, 25, RED);
+                DrawText("PRESSIONE ENTER PARA VOLTAR AO MENU!", 75, 450, 25, RED);
+            }
+
+            if ((pause_app == true) && (player.health <= 0) && (IsKeyPressed(KEY_ENTER)))
+            {
+                // Reinicia o jogo
+                current_app_state = MAIN_MENU;
+                player.health = 3;
+                player.score = 0;
+                player.position = {683, 600};
+                ResetAsteroidManager(&asteroid_manager);
             }
             break;
         }
