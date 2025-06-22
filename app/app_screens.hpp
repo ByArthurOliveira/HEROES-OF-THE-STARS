@@ -151,6 +151,17 @@ void DrawCommands(Texture2D menu_background, Texture2D blur)
 void DrawCredits(Texture2D menu_background, Texture2D blur)
 {
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
+
+    DrawText("CREDITS", 545, 100, 40, GOLD);
+
+    DrawText("Desenvolvido por:", 305, 200, 30, WHITE);
+
+    DrawText("Pedro Ricardo - Graduando em Ciência da Computação (Bacharelado)\nna Universidade Do Estado Do Rio Grande Do Norte (UERN)\nGithub: https://github.com/pedroricardo14", 305, 270, 25, WHITE);
+
+    DrawText("Arthur Oliveira - Graduando em Ciência da Computação (Bacharelado)\nna Universidade Do Estado Do Rio Grande Do Norte (UERN)\nGithub: https://github.com/ByArthurito", 305, 370, 25, WHITE);
+
+    DrawText("Francisco Genyson - Graduando em Ciência da Computação (Bacharelado)\nna Universidade Do Estado Do Rio Grande Do Norte (UERN)\nGithub: https://github.com/Extremois", 305, 470, 25, WHITE);
+
     DrawTexture(blur, 0, 0, LIGHTGRAY);
 }
 //-----------------------------------------------------------------
