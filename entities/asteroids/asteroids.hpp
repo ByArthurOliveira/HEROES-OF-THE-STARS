@@ -383,9 +383,9 @@ void DrawAsteroids(AsteroidManager *manager)
 // Função: DrawDifficultyInfo
 // Descrição: Desenha informações sobre a dificuldade atual
 //-----------------------------------------------------------------
-void DrawDifficultyInfo(AsteroidManager *manager)
+void DrawDifficultyInfo(AsteroidManager *manager, Font font)
 {
-    DrawText(TextFormat("NÍVEL: %d", manager->difficulty_level), 25, 75, 20, YELLOW);
+    DrawTextEx(font, TextFormat("LEVEL %d", manager->difficulty_level), {25, 75}, 20, 1, GOLD);
 
     // Barra de progresso para próximo nível de dificuldade
     float progress = manager->difficulty_timer / DIFFICULTY_INCREASE_INTERVAL;

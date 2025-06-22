@@ -171,7 +171,7 @@ PowerUP CreatePowerUP()
     power_up.position = {
         float(GetRandomValue(power_up.texture.width, 1366 - (5 * power_up.texture.width))), float(-power_up.texture.height)};
     power_up.time_remaining = 10;
-    power_up.fall_speed = 500;
+    power_up.fall_speed = 250;
     power_up.was_catched = false;
     power_up.is_on_screen = false;
     power_up.hit_box = {power_up.position.x, power_up.position.y, float(power_up.texture.width), float(power_up.texture.height)};

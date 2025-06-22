@@ -14,8 +14,8 @@ int InitializeApp()
     //-----------------------------------------------------------
     // Configurações Iniciais: Janela, Áudio e Flags
     //-----------------------------------------------------------
-    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_TOPMOST | FLAG_MSAA_4X_HINT);
-    SetTargetFPS(360);
+    SetConfigFlags(FLAG_WINDOW_TOPMOST | FLAG_MSAA_4X_HINT);
+    SetTargetFPS(240);
     InitWindow(1366, 768, "HEROES OF THE STARS");
     InitAudioDevice();
     SetExitKey(KEY_NULL); // Desativa a tecla de saída automática
@@ -93,7 +93,7 @@ int InitializeApp()
                 }
             }
 
-            DrawMainMenu(app_assets.menu_background, app_assets.blur, app_assets.switch_option_sound);
+            DrawMainMenu(app_assets.menu_background, app_assets.blur, app_assets.switch_option_sound, app_assets.font);
             break;
         }
 
@@ -116,7 +116,7 @@ int InitializeApp()
                 }
 
                 // Rolagem do background
-                UpdateGameBackground(app_assets.game_background, bg_y1, bg_y2, BG_SCROLL_SPEED, bg_initialized);
+                UpdateGameBackground(app_assets.game_background, bg_y0, bg_y1, BG_SCROLL_SPEED, bg_initialized);
 
                 // Movimentação do jogador
                 UpdatePlayer(player);

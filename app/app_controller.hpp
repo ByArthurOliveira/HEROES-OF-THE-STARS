@@ -21,8 +21,8 @@
 
 // Velocidade de rolagem do background e controle do scroll
 float BG_SCROLL_SPEED = 150.0f;
-float bg_y1 = 0;             // Posição vertical do fundo 1
-float bg_y2 = 0;             // Posição vertical do fundo 2
+float bg_y0 = 0;             // Posição vertical do fundo 1
+float bg_y1 = 0;             // Posição vertical do fundo 2
 bool bg_initialized = false; // Flag para indicar se o background foi inicializado
 
 // Flags de controle da aplicação

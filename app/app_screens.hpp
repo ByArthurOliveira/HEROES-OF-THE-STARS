@@ -10,11 +10,12 @@
 // Descrição: Desenha o menu principal na tela com as opções
 // e trata a entrada do usuário para navegar entre elas.
 //-----------------------------------------------------------------
-void DrawMainMenu(Texture2D menu_background, Texture2D blur, Sound switch_sound)
+void DrawMainMenu(Texture2D menu_background, Texture2D blur, Sound switch_sound, Font font)
 {
     // Desenha o fundo do menu principal
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
     DrawTexture(blur, 0, 0, LIGHTGRAY);
+    DrawTextEx(font, "HEROES OF THE STARS", {83, 179}, 55, 1, WHITE);
 
     // Exibe as opções com destaque conforme a opção selecionada
     switch (selected_option)
@@ -24,66 +25,66 @@ void DrawMainMenu(Texture2D menu_background, Texture2D blur, Sound switch_sound)
         {
             current_app_state = GAMEPLAY;
         }
-        DrawText("NOVO JOGO", 75, 325, 20, GOLD);
-        DrawText("TABELA DE PONTUAÇÃO", 75, 375, 20, WHITE);
-        DrawText("COMANDOS", 75, 425, 20, WHITE);
-        DrawText("CREDITS", 75, 475, 20, WHITE);
-        DrawText("SAIR DO JOGO", 75, 525, 20, WHITE);
+        DrawTextEx(font, "NEW GAME", {83, 325}, 25, 1, GOLD);
+        DrawTextEx(font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 2:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = SCOREBOARD;
         }
-        DrawText("NOVO JOGO", 75, 325, 20, WHITE);
-        DrawText("TABELA DE PONTUAÇÃO", 75, 375, 20, GOLD);
-        DrawText("COMANDOS", 75, 425, 20, WHITE);
-        DrawText("CREDITS", 75, 475, 20, WHITE);
-        DrawText("SAIR DO JOGO", 75, 525, 20, WHITE);
+        DrawTextEx(font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(font, "SCOREBOARD", {83, 375}, 25, 1, GOLD);
+        DrawTextEx(font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 3:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = COMMANDS;
         }
-        DrawText("NOVO JOGO", 75, 325, 20, WHITE);
-        DrawText("TABELA DE PONTUAÇÃO", 75, 375, 20, WHITE);
-        DrawText("COMANDOS", 75, 425, 20, GOLD);
-        DrawText("CREDITS", 75, 475, 20, WHITE);
-        DrawText("SAIR DO JOGO", 75, 525, 20, WHITE);
+        DrawTextEx(font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(font, "COMMANDS", {83, 425}, 25, 1, GOLD);
+        DrawTextEx(font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 4:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = CREDITS;
         }
-        DrawText("NOVO JOGO", 75, 325, 20, WHITE);
-        DrawText("TABELA DE PONTUAÇÃO", 75, 375, 20, WHITE);
-        DrawText("COMANDOS", 75, 425, 20, WHITE);
-        DrawText("CREDITS", 75, 475, 20, GOLD);
-        DrawText("SAIR DO JOGO", 75, 525, 20, WHITE);
+        DrawTextEx(font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(font, "CREDITS", {83, 475}, 25, 1, GOLD);
+        DrawTextEx(font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 5:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = EXIT;
         }
-        DrawText("NOVO JOGO", 75, 325, 20, WHITE);
-        DrawText("TABELA DE PONTUAÇÃO", 75, 375, 20, WHITE);
-        DrawText("COMANDOS", 75, 425, 20, WHITE);
-        DrawText("CREDITS", 75, 475, 20, WHITE);
-        DrawText("SAIR DO JOGO", 75, 525, 20, GOLD);
+        DrawTextEx(font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(font, "EXIT GAME", {83, 525}, 25, 1, GOLD);
         break;
     }
 }
 
 void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP power_up, AsteroidManager asteroid_manager)
 {
+    DrawTexture(app_assets.game_background, 0, (int)bg_y0, GRAY);
     DrawTexture(app_assets.game_background, 0, (int)bg_y1, GRAY);
-    DrawTexture(app_assets.game_background, 0, (int)bg_y2, GRAY);
 
-    DrawText("SCORE:", 1150, 25, 25, GOLD);
-    DrawText(TextFormat("%i", player.score), 1250, 25, 25, GOLD);
+    DrawTextEx(app_assets.font, "SCORE:", {1150, 25}, 25, 1, GOLD);
+    DrawTextEx(app_assets.font, TextFormat("%i", player.score), {1250, 25}, 25, 1, GOLD);
 
     DrawTexture(app_assets.health_counter, 25, 25, WHITE);
     DrawTexture(app_assets._X, 70, 30, WHITE);
@@ -102,7 +103,7 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP p
         DrawTexture(app_assets.numbers[3], 95, 30, WHITE);
     }
 
-    DrawDifficultyInfo(&asteroid_manager);
+    DrawDifficultyInfo(&asteroid_manager, app_assets.font);
 
     if (!power_up.was_catched)
     {
