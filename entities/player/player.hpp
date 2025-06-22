@@ -1,35 +1,27 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-// Inclusão da biblioteca necessária
 #include <stdio.h>
 #include "raylib.h"
 
-// Constantes
 constexpr int MAX_LASERS = 25;
 
-// Estruturas de dados
-// Estrutura que representa o jogador
 typedef struct Player
 {
-    // Textura e posição do jogador
+    char name[32];
     Texture2D texture;
     Vector2 position;
     Rectangle hit_box;
-
-    // Propriedades do jogador
     float speed;
     int health;
     int score;
-
-    // Textura do boost e suas coordenadas relativas
+    int best_score;
     Texture2D boost_texture;
     Vector2 boostleft_position;
     Vector2 boostright_position;
     bool boost_active;
 } Player;
 
-// Estrutura que representa o laser
 typedef struct Laser
 {
     Texture2D texture;
@@ -41,7 +33,6 @@ typedef struct Laser
     Sound sound;
 } Laser;
 
-// Estrutura que representa o power-up
 typedef struct PowerUP
 {
     Texture2D texture;
@@ -53,8 +44,7 @@ typedef struct PowerUP
     bool is_on_screen;
 } PowerUP;
 
-// Função para criar e inicializar o jogador
-Player CreatePlayer()
+Player CreatePlayerBase()
 {
     Player player;
     player.texture = LoadTexture("assets/player/player_texture.png");
@@ -62,6 +52,7 @@ Player CreatePlayer()
     player.speed = 250.0f;
     player.health = 3;
     player.score = 0;
+    player.best_score = 0;
     player.boost_texture = LoadTexture("assets/player/boost_texture.png");
     player.boostleft_position = {player.position.x + 25, player.position.y + 70};
     player.boostright_position = {player.position.x + 75, player.position.y + 70};
@@ -70,10 +61,8 @@ Player CreatePlayer()
     return player;
 }
 
-// Função para desenhar o jogador na tela
 void UpdatePlayer(Player &player)
 {
-    // Atualiza a posição do jogador com base nas teclas pressionadas
     if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))
         player.position.y -= player.speed * GetFrameTime();
     if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))
@@ -83,7 +72,6 @@ void UpdatePlayer(Player &player)
     if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
         player.position.x += player.speed * GetFrameTime();
 
-    // Limita a posição do jogador dentro da tela
     if (player.position.x < 0)
         player.position.x = 0;
     if (player.position.x + player.texture.width > GetScreenWidth())
@@ -106,11 +94,9 @@ void UpdatePlayer(Player &player)
         player.speed = 250;
     }
 
-    // Atualiza o hit box do jogador
     player.hit_box = {player.position.x, player.position.y, float(player.texture.width), float(player.texture.height)};
 }
 
-// Função para criar e inicializar um laser com base na posição do jogador
 Laser CreateLaserBase(Player &player)
 {
     Laser laser;
@@ -192,4 +178,4 @@ void CheckPowerUPCollision(PowerUP &power_up, Player &player)
         power_up.time_remaining = 10;
     }
 }
-#endif // PLAYER_HPP
+#endif

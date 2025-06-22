@@ -5,83 +5,80 @@
 #include "raylib.h"
 #include "app_controller.hpp"
 
-//-----------------------------------------------------------------
-// Função: DrawMainMenu
-// Descrição: Desenha o menu principal na tela com as opções
-// e trata a entrada do usuário para navegar entre elas.
-//-----------------------------------------------------------------
-void DrawMainMenu(Texture2D menu_background, Texture2D blur, Sound switch_sound, Font font)
+void DrawMainMenu(AppAssets app_assets, Player &player, PowerUP &power_up)
 {
-    // Desenha o fundo do menu principal
-    DrawTexture(menu_background, 0, 0, LIGHTGRAY);
-    DrawTexture(blur, 0, 0, LIGHTGRAY);
-    DrawTextEx(font, "HEROES OF THE STARS", {83, 179}, 55, 1, WHITE);
 
-    // Exibe as opções com destaque conforme a opção selecionada
+    DrawTexture(app_assets.menu_background, 0, 0, LIGHTGRAY);
+    DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
+    DrawTextEx(app_assets.font, "HEROES OF THE STARS", {83, 179}, 55, 1, WHITE);
+
     switch (selected_option)
     {
     case 1:
         if (IsKeyPressed(KEY_ENTER))
         {
+            player = CreatePlayerBase();
+            power_up = CreatePowerUP();
+            pause_app = false;
             current_app_state = GAMEPLAY;
         }
-        DrawTextEx(font, "NEW GAME", {83, 325}, 25, 1, GOLD);
-        DrawTextEx(font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(font, "COMMANDS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(font, "CREDITS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 2:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = SCOREBOARD;
         }
-        DrawTextEx(font, "NEW GAME", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(font, "SCOREBOARD", {83, 375}, 25, 1, GOLD);
-        DrawTextEx(font, "COMMANDS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(font, "CREDITS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 3:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = COMMANDS;
         }
-        DrawTextEx(font, "NEW GAME", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(font, "COMMANDS", {83, 425}, 25, 1, GOLD);
-        DrawTextEx(font, "CREDITS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 4:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = CREDITS;
         }
-        DrawTextEx(font, "NEW GAME", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(font, "COMMANDS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(font, "CREDITS", {83, 475}, 25, 1, GOLD);
-        DrawTextEx(font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 5:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = EXIT;
         }
-        DrawTextEx(font, "NEW GAME", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(font, "COMMANDS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(font, "CREDITS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(font, "EXIT GAME", {83, 525}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, GOLD);
         break;
     }
 }
 
 void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP power_up, AsteroidManager asteroid_manager)
 {
-    DrawTexture(app_assets.game_background, 0, (int)bg_y0, GRAY);
-    DrawTexture(app_assets.game_background, 0, (int)bg_y1, GRAY);
+    DrawTexture(app_assets.game_background, 0, (int)background_y0, LIGHTGRAY);
+    DrawTexture(app_assets.game_background, 0, (int)background_y1, LIGHTGRAY);
 
     DrawTextEx(app_assets.font, "SCORE:", {1150, 25}, 25, 1, GOLD);
     DrawTextEx(app_assets.font, TextFormat("%i", player.score), {1250, 25}, 25, 1, GOLD);
@@ -110,7 +107,6 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP p
         DrawTexture(power_up.texture, power_up.position.x, power_up.position.y, WHITE);
     }
 
-    // Desenha os asteroides
     DrawAsteroids(&asteroid_manager);
 
     DrawTexture(player.texture, player.position.x, player.position.y, WHITE);
@@ -126,28 +122,19 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP p
             DrawTexture(lasers[i].texture, lasers[i].position.x, lasers[i].position.y, WHITE);
     }
 }
-//-----------------------------------------------------------------
-// Função: DrawScoreboard
-// Descrição: Renderiza a tela do placar utilizando o background principal.
-//-----------------------------------------------------------------
+
 void DrawScoreboard(Texture2D menu_background, Texture2D blur)
 {
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
     DrawTexture(blur, 0, 0, LIGHTGRAY);
 }
-//-----------------------------------------------------------------
-// Função: DrawCommands
-// Descrição: Renderiza a tela que exibe os comandos do jogo.
-//-----------------------------------------------------------------
+
 void DrawCommands(Texture2D menu_background, Texture2D blur)
 {
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
     DrawTexture(blur, 0, 0, LIGHTGRAY);
 }
-//-----------------------------------------------------------------
-// Função: DrawCredits
-// Descrição: Renderiza a tela com os créditos do jogo.
-//-----------------------------------------------------------------
+
 void DrawCredits(Texture2D menu_background, Texture2D blur)
 {
     DrawTexture(menu_background, 0, 0, LIGHTGRAY);
@@ -164,13 +151,9 @@ void DrawCredits(Texture2D menu_background, Texture2D blur)
 
     DrawTexture(blur, 0, 0, LIGHTGRAY);
 }
-//-----------------------------------------------------------------
-// Função: ExitApp
-// Descrição: Sinaliza a saída da aplicação definindo a flag
-// de parada para true.
-//-----------------------------------------------------------------
+
 bool ExitApp()
 {
     return stop_app = true;
 }
-#endif // APP_SCREENS_HPP
+#endif
