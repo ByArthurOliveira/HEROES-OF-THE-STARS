@@ -62,8 +62,8 @@ AsteroidManager CreateAsteroidManager()
     for (int i = 0; i < MAX_ASTEROIDS; i++)
     {
         manager.asteroids[i].is_active = false;
-        manager.asteroids[i].position = {0, 0};
-        manager.asteroids[i].velocity = {0, 0};
+        manager.asteroids[i].position = { 0, 0 };
+        manager.asteroids[i].velocity = { 0, 0 };
         manager.asteroids[i].rotation = 0.0f;
         manager.asteroids[i].rotation_speed = 0.0f;
         manager.asteroids[i].health = 1;
@@ -88,22 +88,20 @@ void IncreaseDifficulty(AsteroidManager *manager)
     manager->current_max_speed = ASTEROID_MAX_SPEED * speed_multiplier;
 
     if (manager->current_min_speed > 200.0f)
-    {
         manager->current_min_speed = 200.0f;
-    }
+
     if (manager->current_max_speed > 350.0f)
-    {
         manager->current_max_speed = 350.0f;
-    }
 
     printf("Dificuldade aumentada! Nível: %d\n", manager->difficulty_level);
     printf("Spawn interval: %.2f, Speed: %.0f-%.0f\n",
-           manager->current_spawn_interval, manager->current_min_speed, manager->current_max_speed);
+           manager->current_spawn_interval,
+           manager->current_min_speed,
+           manager->current_max_speed);
 }
 
 void SpawnAsteroid(AsteroidManager *manager, int screen_width)
 {
-
     for (int i = 0; i < MAX_ASTEROIDS; i++)
     {
         if (!manager->asteroids[i].is_active)
@@ -112,50 +110,47 @@ void SpawnAsteroid(AsteroidManager *manager, int screen_width)
 
             int random_val = GetRandomValue(1, 100);
             if (manager->difficulty_level >= 3 && random_val <= 30)
-            {
                 asteroid->size_type = 2;
-            }
             else if (manager->difficulty_level >= 2 && random_val <= 60)
-            {
                 asteroid->size_type = 1;
-            }
             else
-            {
                 asteroid->size_type = 0;
-            }
 
             switch (asteroid->size_type)
             {
-            case 0:
-                asteroid->texture = manager->small_texture;
-                asteroid->health = 1;
-                break;
-            case 1:
-                asteroid->texture = manager->medium_texture;
-                asteroid->health = 2;
-                break;
-            case 2:
-                asteroid->texture = manager->large_texture;
-                asteroid->health = 3;
-                break;
+                case 0:
+                    asteroid->texture = manager->small_texture;
+                    asteroid->health = 1;
+                    break;
+                case 1:
+                    asteroid->texture = manager->medium_texture;
+                    asteroid->health = 2;
+                    break;
+                case 2:
+                    asteroid->texture = manager->large_texture;
+                    asteroid->health = 3;
+                    break;
             }
 
             asteroid->position.x = GetRandomValue(0, screen_width - asteroid->texture.width);
             asteroid->position.y = -asteroid->texture.height;
 
             asteroid->velocity.x = GetRandomValue(-50, 50);
-            asteroid->velocity.y = GetRandomValue((int)manager->current_min_speed, (int)manager->current_max_speed);
+            asteroid->velocity.y = GetRandomValue(
+                (int)manager->current_min_speed,
+                (int)manager->current_max_speed
+            );
 
             asteroid->rotation = GetRandomValue(0, 360);
             asteroid->rotation_speed = GetRandomValue(-180, 180);
 
             asteroid->is_active = true;
-
             asteroid->hit_box = {
                 asteroid->position.x,
                 asteroid->position.y,
                 (float)asteroid->texture.width,
-                (float)asteroid->texture.height};
+                (float)asteroid->texture.height
+            };
 
             manager->active_count++;
             break;
@@ -175,7 +170,6 @@ int UpdateAsteroids(AsteroidManager *manager, float frametime, int screen_width,
     }
 
     manager->spawn_timer += frametime;
-
     if (manager->spawn_timer >= manager->current_spawn_interval)
     {
         SpawnAsteroid(manager, screen_width);
@@ -190,7 +184,6 @@ int UpdateAsteroids(AsteroidManager *manager, float frametime, int screen_width,
 
             asteroid->position.x += asteroid->velocity.x * frametime;
             asteroid->position.y += asteroid->velocity.y * frametime;
-
             asteroid->rotation += asteroid->rotation_speed * frametime;
 
             asteroid->hit_box.x = asteroid->position.x;
@@ -220,30 +213,26 @@ int CheckAsteroidLaserCollisions(AsteroidManager *manager, Laser lasers[], int m
             {
                 if (lasers[j].is_active)
                 {
-                    if (CheckCollisionRecs(manager->asteroids[i].hit_box,
-                                           {lasers[j].position.x, lasers[j].position.y,
-                                            (float)lasers[j].texture.width, (float)lasers[j].texture.height}))
+                    if (CheckCollisionRecs(
+                            manager->asteroids[i].hit_box,
+                            {
+                                lasers[j].position.x,
+                                lasers[j].position.y,
+                                (float)lasers[j].texture.width,
+                                (float)lasers[j].texture.height
+                            }))
                     {
-
                         lasers[j].is_active = false;
-
                         manager->asteroids[i].health--;
 
                         if (manager->asteroids[i].health <= 0)
                         {
-
                             int base_points = 0;
                             switch (manager->asteroids[i].size_type)
                             {
-                            case 0:
-                                base_points = 10;
-                                break;
-                            case 1:
-                                base_points = 20;
-                                break;
-                            case 2:
-                                base_points = 30;
-                                break;
+                                case 0: base_points = 10; break;
+                                case 1: base_points = 20; break;
+                                case 2: base_points = 30; break;
                             }
 
                             score_gained += base_points + (manager->difficulty_level - 1) * 2;
@@ -272,13 +261,13 @@ bool CheckAsteroidPlayerCollision(AsteroidManager *manager, Rectangle player_hit
         {
             if (CheckCollisionRecs(manager->asteroids[i].hit_box, player_hitbox))
             {
-
                 manager->asteroids[i].is_active = false;
                 manager->active_count--;
                 return true;
             }
         }
     }
+
     return false;
 }
 
@@ -292,26 +281,29 @@ void DrawAsteroids(AsteroidManager *manager)
 
             Vector2 origin = {
                 asteroid->texture.width / 2.0f,
-                asteroid->texture.height / 2.0f};
+                asteroid->texture.height / 2.0f
+            };
 
             Vector2 draw_position = {
                 asteroid->position.x + origin.x,
-                asteroid->position.y + origin.y};
+                asteroid->position.y + origin.y
+            };
 
             DrawTexturePro(
                 asteroid->texture,
-                {0, 0, (float)asteroid->texture.width, (float)asteroid->texture.height},
-                {draw_position.x, draw_position.y, (float)asteroid->texture.width, (float)asteroid->texture.height},
+                { 0, 0, (float)asteroid->texture.width, (float)asteroid->texture.height },
+                { draw_position.x, draw_position.y, (float)asteroid->texture.width, (float)asteroid->texture.height },
                 origin,
                 asteroid->rotation,
-                WHITE);
+                WHITE
+            );
         }
     }
 }
 
 void DrawDifficultyInfo(AsteroidManager *manager, Font font)
 {
-    DrawTextEx(font, TextFormat("LEVEL %d", manager->difficulty_level), {25, 75}, 20, 1, GOLD);
+    DrawTextEx(font, TextFormat("LEVEL %d", manager->difficulty_level), { 25, 75 }, 20, 1, GOLD);
 
     float progress = manager->difficulty_timer / DIFFICULTY_INCREASE_INTERVAL;
     int bar_width = 200;
@@ -324,7 +316,6 @@ void DrawDifficultyInfo(AsteroidManager *manager, Font font)
 
 void ResetAsteroidManager(AsteroidManager *manager)
 {
-
     manager->spawn_timer = 0.0f;
     manager->difficulty_timer = 0.0f;
     manager->difficulty_level = 1;

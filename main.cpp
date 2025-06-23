@@ -1,4 +1,5 @@
 #define RAYGUI_IMPLEMENTATION
+
 #include <stdio.h>
 #include "raylib.h"
 #include "raygui.h"
@@ -9,27 +10,29 @@ bool edit_mode = false;
 
 int main()
 {
-    SetConfigFlags(FLAG_WINDOW_TOPMOST | FLAG_MSAA_4X_HINT | FLAG_WINDOW_UNDECORATED);
+    SetConfigFlags(FLAG_WINDOW_TOPMOST | FLAG_MSAA_4X_HINT | FLAG_WINDOW_UNDECORATED | FLAG_VSYNC_HINT);
     InitWindow(450, 250, "HEROES OF THE STARS");
-    SetTargetFPS(240);
-
-    char username[MAX_INPUT_CHARS];
+    SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText("Insert your username", 110, 35, 20, BLACK);
-        if (GuiTextBox((Rectangle){125, 75, 200, 40}, input_text, MAX_INPUT_CHARS, edit_mode))
+
+        DrawText("Insert your username", 110, 35, 20, DARKGRAY);
+
+        if (GuiTextBox((Rectangle){ 125, 75, 200, 40 }, input_text, MAX_INPUT_CHARS, edit_mode))
         {
             edit_mode = !edit_mode;
         }
-        if ((GuiButton((Rectangle){125, 125, 200, 40}, "LOGIN") || IsKeyPressed(KEY_ENTER)) && input_text[0] != '\0')
+
+        if ((GuiButton((Rectangle){ 125, 125, 200, 40 }, "LOGIN") || IsKeyPressed(KEY_ENTER)) && input_text[0] != '\0')
         {
             strncpy(username, strupr(input_text), MAX_INPUT_CHARS);
             CloseWindow();
             break;
         }
+
         EndDrawing();
     }
 
