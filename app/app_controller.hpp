@@ -23,7 +23,8 @@ bool pause_music = false;
 char username[MAX_INPUT_CHARS];
 Player player;
 
-enum AppState {
+enum AppState
+{
     MAIN_MENU,
     GAMEPLAY,
     SCOREBOARD,
@@ -35,7 +36,8 @@ enum AppState {
 AppState current_app_state = MAIN_MENU;
 int selected_option = 1;
 
-typedef struct Timer {
+typedef struct Timer
+{
     float real_time;
     float last_time;
     float interval;
@@ -46,10 +48,63 @@ Timer score_verifier;
 Timer laser_timer;
 Timer power_up_timer;
 
-void WriteScoreboard(Player player, char username[]) {
-    FILE* scoreboard = fopen("db/scoreboard.csv", "a");
+void WriteScoreboard(Player player, char username[])
+{
+    FILE *scoreboard = fopen("db/scoreboard.csv", "a");
+
+    if (scoreboard == NULL)
+    {
+        return;
+    }
+
     fprintf(scoreboard, "%s,%d\n", username, player.best_score);
+
     fclose(scoreboard);
 }
 
+void OrganizeScoreboard()
+{
+    FILE *scoreboard = fopen("db/scoreboard.csv", "r");
+
+    if (scoreboard == NULL)
+    {
+        return;
+    }
+
+    char line[256];
+    char scores[100][256];
+    int count = 0;
+
+    while (fgets(line, sizeof(line), scoreboard))
+    {
+        strcpy(scores[count++], line);
+    }
+
+    fclose(scoreboard);
+
+    for (int i = 0; i < count - 1; i++)
+    {
+        for (int j = i + 1; j < count; j++)
+        {
+            int score_i = atoi(strchr(scores[i], ',') + 1);
+            int score_j = atoi(strchr(scores[j], ',') + 1);
+            if (score_i < score_j)
+            {
+                char temp[256];
+                strcpy(temp, scores[i]);
+                strcpy(scores[i], scores[j]);
+                strcpy(scores[j], temp);
+            }
+        }
+    }
+
+    scoreboard = fopen("db/scoreboard.csv", "w");
+
+    for (int i = 0; i < count; i++)
+    {
+        fputs(scores[i], scoreboard);
+    }
+
+    fclose(scoreboard);
+}
 #endif

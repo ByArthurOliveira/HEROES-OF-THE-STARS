@@ -19,6 +19,7 @@ typedef struct Player
     Vector2 boostleft_position;
     Vector2 boostright_position;
     bool boost_active;
+    Sound spaceship_sound;
 } Player;
 
 Player CreatePlayerBase()
@@ -28,23 +29,22 @@ Player CreatePlayerBase()
     player.texture = LoadTexture("assets/player/player_texture.png");
     player.position = {
         (GetScreenWidth() - player.texture.width) * 0.5f,
-        (GetScreenHeight() - player.texture.height) * 0.5f
-    };
+        (GetScreenHeight() - player.texture.height) * 0.5f};
     player.speed = 250.0f;
     player.health = 3;
     player.score = 0;
     player.best_score = 0;
     player.boost_texture = LoadTexture("assets/player/boost_texture.png");
-    player.boostleft_position = { player.position.x + 25, player.position.y + 70 };
-    player.boostright_position = { player.position.x + 75, player.position.y + 70 };
+    player.boostleft_position = {player.position.x + 25, player.position.y + 70};
+    player.boostright_position = {player.position.x + 75, player.position.y + 70};
     player.boost_active = false;
     player.hit_box = {
         player.position.x,
         player.position.y,
         float(player.texture.width),
-        float(player.texture.height)
-    };
+        float(player.texture.height)};
 
+    player.spaceship_sound = LoadSound("assets/player/spaceship_sound.wav");
     return player;
 }
 
@@ -77,8 +77,8 @@ void UpdatePlayer(Player &player)
     if (IsKeyDown(KEY_LEFT_SHIFT))
     {
         player.boost_active = true;
-        player.boostleft_position = { player.position.x + 25, player.position.y + 70 };
-        player.boostright_position = { player.position.x + 75, player.position.y + 70 };
+        player.boostleft_position = {player.position.x + 25, player.position.y + 70};
+        player.boostright_position = {player.position.x + 75, player.position.y + 70};
         player.speed = 500;
     }
     else
@@ -91,8 +91,7 @@ void UpdatePlayer(Player &player)
         player.position.x,
         player.position.y,
         float(player.texture.width),
-        float(player.texture.height)
-    };
+        float(player.texture.height)};
 }
 
 typedef struct Laser
@@ -112,7 +111,7 @@ Laser CreateLaserBase(Player player)
 
     laser.is_active = false;
     laser.texture = LoadTexture("assets/player/laser_texture.png");
-    laser.position = { player.position.x + 50, player.position.y - 50 };
+    laser.position = {player.position.x + 50, player.position.y - 50};
     laser.speed = 775.0f;
     laser.interval = 0.275f;
     laser.sound = LoadSound("assets/player/laser_sound_effect.ogg");
@@ -120,8 +119,7 @@ Laser CreateLaserBase(Player player)
         laser.position.x,
         laser.position.y,
         float(laser.texture.width),
-        float(laser.texture.height)
-    };
+        float(laser.texture.height)};
 
     return laser;
 }
@@ -132,10 +130,10 @@ void SpawnLaser(Laser lasers[], Player &player)
     {
         if (!lasers[i].is_active)
         {
+            PlaySound(lasers[i].sound);
             lasers[i].position.x = player.position.x + 50;
             lasers[i].position.y = player.position.y - 50;
             lasers[i].is_active = true;
-            PlaySound(lasers[i].sound);
             break;
         }
     }
@@ -173,8 +171,7 @@ PowerUP CreatePowerUP()
     power_up.texture = LoadTexture("assets/player/power_up_texture.png");
     power_up.position = {
         float(GetRandomValue(power_up.texture.width, 1366 - (5 * power_up.texture.width))),
-        float(-power_up.texture.height)
-    };
+        float(-power_up.texture.height)};
     power_up.time_remaining = 10;
     power_up.fall_speed = 250;
     power_up.was_catched = false;
@@ -183,8 +180,7 @@ PowerUP CreatePowerUP()
         power_up.position.x,
         power_up.position.y,
         float(power_up.texture.width),
-        float(power_up.texture.height)
-    };
+        float(power_up.texture.height)};
 
     return power_up;
 }
@@ -196,8 +192,7 @@ void UpdatePowerUP(PowerUP &power_up)
         power_up.position.x,
         power_up.position.y,
         float(power_up.texture.width),
-        float(power_up.texture.height)
-    };
+        float(power_up.texture.height)};
 }
 
 void CheckPowerUPCollision(PowerUP &power_up, Player &player)
