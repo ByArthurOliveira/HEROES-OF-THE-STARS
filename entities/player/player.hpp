@@ -216,4 +216,14 @@ void SetLaserInterval(PowerUP power_up, Laser lasers[])
     }
 }
 
+void ResetPowerUP(PowerUP &power_up)
+{
+    power_up.position.y = - power_up.texture.height;
+    power_up.position.x = float(GetRandomValue(power_up.texture.width, 1366 - (5 * power_up.texture.width)));
+    power_up.hit_box = {
+        power_up.position.x,
+        power_up.position.y,
+        float(power_up.texture.width),
+        float(power_up.texture.height)};
+}
 #endif

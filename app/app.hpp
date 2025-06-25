@@ -112,7 +112,7 @@ void InitializeApp(char username[])
                     int chance = GetRandomValue(0, 4800);
                     if (chance == 0)
                     {
-                        power_up = CreatePowerUP();
+                        ResetPowerUP(power_up);
                         power_up.is_on_screen = true;
                     }
                 }
