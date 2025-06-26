@@ -133,6 +133,15 @@ void DrawScoreboard(AppAssets app_assets)
 void DrawCommands(AppAssets app_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
+
+    DrawText("COMANDOS DO JOGO", 500, 200, 40, GOLD);
+
+    DrawText("W - Mover para cima", 500, 300, 30, WHITE);
+    DrawText("S - Mover para baixo", 500, 350, 30, WHITE);
+    DrawText("A - Mover para a esquerda", 500, 400, 30, WHITE);
+    DrawText("D - Mover para a direita", 500, 450, 30, WHITE);
+    DrawText("SPACE - Atirar", 500, 500, 30, WHITE);
+
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 }
 
