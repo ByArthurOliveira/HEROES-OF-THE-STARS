@@ -13,6 +13,7 @@ typedef struct AppAssets
     Texture2D numbers[4];
     Texture2D _X;
     Music menu_music_theme;
+    Sound confirm_option_sound;
     Sound switch_option_sound;
     Font font;
 } AppAssets;
@@ -27,7 +28,8 @@ AppAssets LoadAppAssets()
     assets.health_counter = LoadTexture("assets/interface/health_counter.png");
 
     assets.menu_music_theme = LoadMusicStream("assets/sounds/menu_music.mp3");
-    assets.switch_option_sound = LoadSound("assets/sounds/switch_sound_effect.ogg");
+    assets.confirm_option_sound = LoadSound("assets/sounds/confirm_sound_effect.mp3");
+    assets.switch_option_sound = LoadSound("assets/sounds/switch_option_sound.mp3");
 
     for (int i = 0; i < 4; i++)
     {

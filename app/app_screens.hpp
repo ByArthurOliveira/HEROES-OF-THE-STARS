@@ -134,7 +134,7 @@ void DrawCommands(AppAssets app_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
 
-    DrawText("COMANDOS DO JOGO", 500, 200, 40, GOLD);
+    DrawText("COMANDOS", 540, 200, 40, GOLD);
 
     DrawText("W - Mover para cima", 500, 300, 30, WHITE);
     DrawText("S - Mover para baixo", 500, 350, 30, WHITE);
@@ -148,7 +148,7 @@ void DrawCommands(AppAssets app_assets)
 void DrawCredits(AppAssets app_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
-    DrawText("CREDITS", 545, 100, 40, GOLD);
+    DrawText("CREDITOS", 545, 100, 40, GOLD);
 
     DrawText("Desenvolvido por:", 305, 200, 30, WHITE);
 
@@ -175,7 +175,7 @@ void DrawCredits(AppAssets app_assets)
 
 bool ExitApp()
 {
-    return stop_app = true;
+    return close_app = true;
 }
 
 #endif

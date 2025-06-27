@@ -5,9 +5,9 @@
 #include "raylib.h"
 #include "app/app_screens.hpp"
 
-void InitializeApp(char username[])
+int InitializeApp(char username[])
 {
-    SetConfigFlags(FLAG_WINDOW_TOPMOST | FLAG_MSAA_4X_HINT | FLAG_WINDOW_UNDECORATED | FLAG_VSYNC_HINT);
+    SetConfigFlags(FLAG_WINDOW_TOPMOST | FLAG_VSYNC_HINT);
     SetTargetFPS(60);
     SetExitKey(KEY_NULL);
     SetRandomSeed((unsigned int)GetTime());
@@ -17,7 +17,6 @@ void InitializeApp(char username[])
 
     AppAssets app_assets = LoadAppAssets();
     SetMusicVolume(app_assets.menu_music_theme, 0.25);
-    SetSoundVolume(app_assets.switch_option_sound, 0.50);
     PlayMusicStream(app_assets.menu_music_theme);
 
     player = CreatePlayerBase();
@@ -34,7 +33,7 @@ void InitializeApp(char username[])
 
     AsteroidManager asteroid_manager = CreateAsteroidManager();
 
-    while (!stop_app)
+    while (!close_app)
     {
         BeginDrawing();
         ClearBackground(WHITE);
@@ -51,25 +50,29 @@ void InitializeApp(char username[])
                 ResumeMusicStream(app_assets.menu_music_theme);
             UpdateMusicStream(app_assets.menu_music_theme);
 
-            app_timer.real_time = GetTime();
-
+            option_timer.real_time = GetTime();
             if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) && selected_option > 1)
             {
-                if (app_timer.real_time - app_timer.last_time > 0.225f)
+                if (option_timer.real_time - option_timer.last_time > 0.255f)
                 {
                     PlaySound(app_assets.switch_option_sound);
                     selected_option--;
-                    app_timer.last_time = app_timer.real_time;
+                    option_timer.last_time = option_timer.real_time;
                 }
             }
             else if ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) && selected_option < 5)
             {
-                if (app_timer.real_time - app_timer.last_time > 0.225f)
+                if (option_timer.real_time - option_timer.last_time > 0.255f)
                 {
                     PlaySound(app_assets.switch_option_sound);
                     selected_option++;
-                    app_timer.last_time = app_timer.real_time;
+                    option_timer.last_time = option_timer.real_time;
                 }
+            }
+
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                PlaySound(app_assets.confirm_option_sound);
             }
 
             DrawMainMenu(app_assets, player, power_up);
@@ -96,29 +99,37 @@ void InitializeApp(char username[])
             {
                 SetSoundVolume(player.spaceship_sound, 0.11);
 
-                score_verifier.real_time = GetTime();
-                if (score_verifier.real_time - score_verifier.last_time > 1)
+                score_updater.real_time = GetTime();
+                if (score_updater.real_time - score_updater.last_time > 1)
                 {
                     player.score += 1;
-                    score_verifier.last_time = score_verifier.real_time;
+                    score_updater.last_time = score_updater.real_time;
                 }
 
                 UpdateGameBackground(app_assets.game_background, background_y0, background_y1, BG_SCROLL_SPEED, background_initialized);
                 UpdatePlayer(player);
                 CheckPowerUPCollision(power_up, player);
 
+                spawn_timer += GetFrameTime();
                 if (!power_up.is_on_screen)
                 {
-                    int chance = GetRandomValue(0, 4800);
-                    if (chance == 0)
+                    spawn_timer += GetFrameTime();
+
+                    if (spawn_timer >= spawn_interval)
                     {
-                        ResetPowerUP(power_up);
-                        power_up.is_on_screen = true;
+                        int chance = GetRandomValue(0, 9);
+                        if (chance == 0)
+                        {
+                            ResetPowerUP(power_up);
+                            power_up.is_on_screen = true;
+                        }
+                        spawn_timer = 0.0f;
                     }
                 }
                 else
                 {
                     UpdatePowerUP(power_up);
+
                     if (power_up.position.y > GetScreenHeight() + power_up.texture.height)
                     {
                         power_up.is_on_screen = false;
@@ -183,8 +194,8 @@ void InitializeApp(char username[])
 
             if ((pause_app == true) && (player.health <= 0) && (IsKeyPressed(KEY_ENTER)))
             {
-                if (player.score > player.best_score)
-                    player.best_score = player.score;
+                if (player.score > player.score_record)
+                    player.score_record = player.score;
 
                 current_app_state = MAIN_MENU;
                 player.health = 3;
@@ -265,36 +276,38 @@ void InitializeApp(char username[])
         EndDrawing();
     }
 
-    WriteScoreboard(player, username);
+    if (player.score_record != 0)
+    {
+        WriteScoreboard(player, username);
+    }
 
     CloseAudioDevice();
     CloseWindow();
 
     UnloadMusicStream(app_assets.menu_music_theme);
-    UnloadFont(app_assets.font);
+    UnloadSound(app_assets.confirm_option_sound);
+    UnloadSound(app_assets.switch_option_sound);
     UnloadTexture(app_assets.menu_background);
     UnloadTexture(app_assets.game_background);
     UnloadTexture(app_assets.blur);
     UnloadTexture(app_assets.health_counter);
-
     for (int i = 0; i < 4; i++)
     {
         UnloadTexture(app_assets.numbers[i]);
     }
-
     UnloadTexture(app_assets._X);
-    UnloadSound(app_assets.switch_option_sound);
-    UnloadTexture(app_assets.game_background);
-    UnloadTexture(app_assets.menu_background);
+    UnloadFont(app_assets.font);
 
+    UnloadTexture(player.texture);
+    UnloadTexture(player.boost_texture);
+    UnloadSound(player.spaceship_sound);
     UnloadTexture(power_up.texture);
     UnloadTexture(lasers->texture);
     UnloadSound(lasers->sound);
-    UnloadTexture(player.boost_texture);
-    UnloadTexture(player.texture);
-    UnloadSound(player.spaceship_sound);
+    UnloadTexture(laser_template.texture);
 
     UnloadAsteroidManager(&asteroid_manager);
+    return 0;
 }
 
 #endif

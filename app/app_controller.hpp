@@ -16,7 +16,7 @@ float background_y0 = 0;
 float background_y1 = 0;
 bool background_initialized = false;
 
-bool stop_app = false;
+bool close_app = false;
 bool pause_app = false;
 bool pause_music = false;
 
@@ -43,10 +43,13 @@ typedef struct Timer
     float interval;
 } Timer;
 
-Timer app_timer;
-Timer score_verifier;
+Timer option_timer;
+Timer score_updater;
 Timer laser_timer;
+
 Timer power_up_timer;
+float spawn_timer = 0.0f;
+float spawn_interval = 2.0f; // em segundos (ajustável)
 
 void WriteScoreboard(Player player, char username[])
 {
@@ -57,53 +60,7 @@ void WriteScoreboard(Player player, char username[])
         return;
     }
 
-    fprintf(scoreboard, "%s,%d\n", username, player.best_score);
-
-    fclose(scoreboard);
-}
-
-void OrganizeScoreboard()
-{
-    FILE *scoreboard = fopen("db/scoreboard.csv", "r");
-
-    if (scoreboard == NULL)
-    {
-        return;
-    }
-
-    char line[256];
-    char scores[100][256];
-    int count = 0;
-
-    while (fgets(line, sizeof(line), scoreboard))
-    {
-        strcpy(scores[count++], line);
-    }
-
-    fclose(scoreboard);
-
-    for (int i = 0; i < count - 1; i++)
-    {
-        for (int j = i + 1; j < count; j++)
-        {
-            int score_i = atoi(strchr(scores[i], ',') + 1);
-            int score_j = atoi(strchr(scores[j], ',') + 1);
-            if (score_i < score_j)
-            {
-                char temp[256];
-                strcpy(temp, scores[i]);
-                strcpy(scores[i], scores[j]);
-                strcpy(scores[j], temp);
-            }
-        }
-    }
-
-    scoreboard = fopen("db/scoreboard.csv", "w");
-
-    for (int i = 0; i < count; i++)
-    {
-        fputs(scores[i], scoreboard);
-    }
+    fprintf(scoreboard, "%s,%d\n", username, player.score_record);
 
     fclose(scoreboard);
 }

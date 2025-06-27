@@ -14,11 +14,11 @@ typedef struct Player
     float speed;
     int health;
     int score;
-    int best_score;
+    int score_record;
+    bool boost_active;
     Texture2D boost_texture;
     Vector2 boostleft_position;
     Vector2 boostright_position;
-    bool boost_active;
     Sound spaceship_sound;
 } Player;
 
@@ -33,7 +33,7 @@ Player CreatePlayerBase()
     player.speed = 250.0f;
     player.health = 3;
     player.score = 0;
-    player.best_score = 0;
+    player.score_record = 0;
     player.boost_texture = LoadTexture("assets/player/boost_texture.png");
     player.boostleft_position = {player.position.x + 25, player.position.y + 70};
     player.boostright_position = {player.position.x + 75, player.position.y + 70};
@@ -43,7 +43,6 @@ Player CreatePlayerBase()
         player.position.y,
         float(player.texture.width),
         float(player.texture.height)};
-
     player.spaceship_sound = LoadSound("assets/player/spaceship_sound.wav");
     return player;
 }
@@ -96,19 +95,18 @@ void UpdatePlayer(Player &player)
 
 typedef struct Laser
 {
+    bool is_active;
     Texture2D texture;
     Vector2 position;
     Rectangle hit_box;
     float speed;
     float interval;
-    bool is_active;
     Sound sound;
 } Laser;
 
-Laser CreateLaserBase(Player player)
+Laser CreateLaserBase(Player &player)
 {
     Laser laser;
-
     laser.is_active = false;
     laser.texture = LoadTexture("assets/player/laser_texture.png");
     laser.position = {player.position.x + 50, player.position.y - 50};
@@ -120,7 +118,6 @@ Laser CreateLaserBase(Player player)
         laser.position.y,
         float(laser.texture.width),
         float(laser.texture.height)};
-
     return laser;
 }
 
@@ -155,19 +152,18 @@ void UpdateLaser(Laser lasers[])
 
 typedef struct PowerUP
 {
+    bool is_on_screen;
+    bool was_catched;
     Texture2D texture;
     Vector2 position;
     Rectangle hit_box;
     float fall_speed;
     int time_remaining;
-    bool was_catched;
-    bool is_on_screen;
 } PowerUP;
 
 PowerUP CreatePowerUP()
 {
     PowerUP power_up;
-
     power_up.texture = LoadTexture("assets/player/power_up_texture.png");
     power_up.position = {
         float(GetRandomValue(power_up.texture.width, 1366 - (5 * power_up.texture.width))),
@@ -181,7 +177,6 @@ PowerUP CreatePowerUP()
         power_up.position.y,
         float(power_up.texture.width),
         float(power_up.texture.height)};
-
     return power_up;
 }
 
@@ -204,7 +199,7 @@ void CheckPowerUPCollision(PowerUP &power_up, Player &player)
     }
 }
 
-void SetLaserInterval(PowerUP power_up, Laser lasers[])
+void SetLaserInterval(PowerUP &power_up, Laser lasers[])
 {
     if (power_up.was_catched)
     {
@@ -218,7 +213,7 @@ void SetLaserInterval(PowerUP power_up, Laser lasers[])
 
 void ResetPowerUP(PowerUP &power_up)
 {
-    power_up.position.y = - power_up.texture.height;
+    power_up.position.y = -power_up.texture.height;
     power_up.position.x = float(GetRandomValue(power_up.texture.width, 1366 - (5 * power_up.texture.width)));
     power_up.hit_box = {
         power_up.position.x,
