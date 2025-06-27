@@ -78,9 +78,9 @@ void IncreaseDifficulty(AsteroidManager *manager)
     manager->difficulty_level++;
 
     manager->current_spawn_interval = ASTEROID_SPAWN_INTERVAL * (0.85f / manager->difficulty_level);
-    if (manager->current_spawn_interval < 0.5f)
+    if (manager->current_spawn_interval < 0.25f)
     {
-        manager->current_spawn_interval = 0.5f;
+        manager->current_spawn_interval = 0.25f;
     }
 
     float speed_multiplier = 1.0f + (manager->difficulty_level - 1) * 0.3f;
