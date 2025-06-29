@@ -302,7 +302,7 @@ void DrawAsteroids(AsteroidManager *manager)
 
 void DrawDifficultyInfo(AsteroidManager *manager, Font font)
 {
-    DrawTextEx(font, TextFormat("LEVEL %d", manager->difficulty_level), {25, 75}, 20, 1, GOLD);
+    DrawTextEx(font, TextFormat("NÍVEL %d", manager->difficulty_level), {25, 75}, 20, 1, GOLD);
 
     float progress = manager->difficulty_timer / DIFFICULTY_INCREASE_INTERVAL;
     int bar_width = 200;

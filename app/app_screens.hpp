@@ -21,55 +21,55 @@ void DrawMainMenu(AppAssets app_assets, Player &player, PowerUP &power_up)
             pause_app = false;
             current_app_state = GAMEPLAY;
         }
-        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, GOLD);
-        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NOVO JOGO", {83, 325}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMANDOS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CRÉDITOS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SAIR DO JOGO", {83, 525}, 25, 1, WHITE);
         break;
     case 2:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = SCOREBOARD;
         }
-        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, GOLD);
-        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NOVO JOGO", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {83, 375}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "COMANDOS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CRÉDITOS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SAIR DO JOGO", {83, 525}, 25, 1, WHITE);
         break;
     case 3:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = COMMANDS;
         }
-        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, GOLD);
-        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NOVO JOGO", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMANDOS", {83, 425}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "CRÉDITOS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SAIR DO JOGO", {83, 525}, 25, 1, WHITE);
         break;
     case 4:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = CREDITS;
         }
-        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, GOLD);
-        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NOVO JOGO", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMANDOS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CRÉDITOS", {83, 475}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "SAIR DO JOGO", {83, 525}, 25, 1, WHITE);
         break;
     case 5:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = EXIT;
         }
-        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "NOVO JOGO", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMANDOS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CRÉDITOS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SAIR DO JOGO", {83, 525}, 25, 1, GOLD);
         break;
     }
 }
@@ -79,8 +79,8 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP p
     DrawTexture(app_assets.game_background, 0, (int)background_y0, LIGHTGRAY);
     DrawTexture(app_assets.game_background, 0, (int)background_y1, LIGHTGRAY);
 
-    DrawTextEx(app_assets.font, "SCORE:", {1150, 25}, 25, 1, GOLD);
-    DrawTextEx(app_assets.font, TextFormat("%i", player.score), {1250, 25}, 25, 1, GOLD);
+    DrawTextEx(app_assets.font, "PONTOS:", {1150, 25}, 25, 1, GOLD);
+    DrawTextEx(app_assets.font, TextFormat(" %i", player.score), {1250, 25}, 25, 1, GOLD);
 
     DrawTexture(app_assets.health_counter, 25, 25, WHITE);
     DrawTexture(app_assets._X, 70, 30, WHITE);
@@ -129,14 +129,14 @@ void DrawScoreboard(AppAssets app_assets)
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 
-    DrawTextEx(app_assets.font, "PLACAR DE LIDERES", {470, 100}, 40, 1, GOLD);
+    DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {460, 75}, 40, 1, GOLD);
 }
 
 void DrawCommands(AppAssets app_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
 
-    DrawTextEx(app_assets.font, "COMANDOS", {540, 100}, 40, 1, GOLD);
+    DrawTextEx(app_assets.font, "COMANDOS", {540, 75}, 40, 1, GOLD);
 
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 }
@@ -144,7 +144,7 @@ void DrawCommands(AppAssets app_assets)
 void DrawCredits(AppAssets app_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
-    DrawTextEx(app_assets.font, "CREDITOS", {545, 100}, 40, 1, GOLD);
+    DrawTextEx(app_assets.font, "CRÉDITOS", {545, 75}, 40, 1, GOLD);
 
     DrawTextEx(app_assets.font, "Este jogo foi desenvolvido por:", {305, 200}, 30, 1, WHITE);
 

@@ -24,7 +24,7 @@ int Login()
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        DrawText("Insert your username", 110, 35, 20, DARKGRAY);
+        DrawText("Informe seu nome de usuário", 85, 35, 20, DARKGRAY);
 
         if (GuiTextBox((Rectangle){125, 95, 200, 40}, input_text, MAX_INPUT_CHARS, edit_mode))
         {
