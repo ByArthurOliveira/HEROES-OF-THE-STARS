@@ -9,7 +9,7 @@ void DrawMainMenu(AppAssets app_assets, Player &player, PowerUP &power_up)
 {
     DrawTexture(app_assets.menu_background, 0, 0, LIGHTGRAY);
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
-    DrawTextEx(app_assets.font, "HEROES OF THE STARS", {83, 179}, 55, 1, WHITE);
+    DrawTextEx(app_assets.font, "HEROES OF THE STARS", {83, 185}, 55, 1, WHITE);
 
     switch (selected_option)
     {
@@ -21,55 +21,55 @@ void DrawMainMenu(AppAssets app_assets, Player &player, PowerUP &power_up)
             pause_app = false;
             current_app_state = GAMEPLAY;
         }
-        DrawTextEx(app_assets.font, "NOVO JOGO", {83, 325}, 25, 1, GOLD);
-        DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "COMANDOS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "CRÉDITOS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "SAIR DO JOGO", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 2:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = SCOREBOARD;
         }
-        DrawTextEx(app_assets.font, "NOVO JOGO", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {83, 375}, 25, 1, GOLD);
-        DrawTextEx(app_assets.font, "COMANDOS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "CRÉDITOS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "SAIR DO JOGO", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 3:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = COMMANDS;
         }
-        DrawTextEx(app_assets.font, "NOVO JOGO", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "COMANDOS", {83, 425}, 25, 1, GOLD);
-        DrawTextEx(app_assets.font, "CRÉDITOS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "SAIR DO JOGO", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 4:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = CREDITS;
         }
-        DrawTextEx(app_assets.font, "NOVO JOGO", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "COMANDOS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "CRÉDITOS", {83, 475}, 25, 1, GOLD);
-        DrawTextEx(app_assets.font, "SAIR DO JOGO", {83, 525}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, WHITE);
         break;
     case 5:
         if (IsKeyPressed(KEY_ENTER))
         {
             current_app_state = EXIT;
         }
-        DrawTextEx(app_assets.font, "NOVO JOGO", {83, 325}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {83, 375}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "COMANDOS", {83, 425}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "CRÉDITOS", {83, 475}, 25, 1, WHITE);
-        DrawTextEx(app_assets.font, "SAIR DO JOGO", {83, 525}, 25, 1, GOLD);
+        DrawTextEx(app_assets.font, "NEW GAME", {83, 325}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "SCOREBOARD", {83, 375}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "COMMANDS", {83, 425}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "CREDITS", {83, 475}, 25, 1, WHITE);
+        DrawTextEx(app_assets.font, "EXIT GAME", {83, 525}, 25, 1, GOLD);
         break;
     }
 }
@@ -79,8 +79,8 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP p
     DrawTexture(app_assets.game_background, 0, (int)background_y0, LIGHTGRAY);
     DrawTexture(app_assets.game_background, 0, (int)background_y1, LIGHTGRAY);
 
-    DrawTextEx(app_assets.font, "PONTOS:", {1150, 25}, 25, 1, GOLD);
-    DrawTextEx(app_assets.font, TextFormat(" %i", player.score), {1250, 25}, 25, 1, GOLD);
+    DrawTextEx(app_assets.font, "SCORE:", {1150, 25}, 32, 1, GOLD);
+    DrawTextEx(app_assets.font, TextFormat("%i", player.score), {1250, 25}, 32, 1, GOLD);
 
     DrawTexture(app_assets.health_counter, 25, 25, WHITE);
     DrawTexture(app_assets._X, 70, 30, WHITE);
@@ -129,14 +129,42 @@ void DrawScoreboard(AppAssets app_assets)
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 
-    DrawTextEx(app_assets.font, "PLACAR DE LÍDERES", {460, 75}, 40, 1, GOLD);
+    DrawTextEx(app_assets.font, "SCOREBOARD", {505, 75}, 40, 1, GOLD);
+
+    char scoreboard_content[256];
+    FILE *file = fopen("db/scoreboard.csv", "r");
+
+    if (file)
+    {
+        int y_position = 200;
+        int line_count = 1;
+        while (fgets(scoreboard_content, sizeof(scoreboard_content), file) && line_count <= 10)
+        {
+            // Remove o caractere de nova linha
+            scoreboard_content[strcspn(scoreboard_content, "\n")] = 0;
+
+            // Substituir vírgulas por dois-pontos
+            for (int i = 0; scoreboard_content[i] != '\0'; i++)
+            {
+                if (scoreboard_content[i] == ',')
+                {
+                    scoreboard_content[i] = ':';
+                }
+            }
+
+            DrawTextEx(app_assets.font, TextFormat("%d - %s", line_count, scoreboard_content), (Vector2){305, (float)y_position}, 30, 1, WHITE);
+            y_position += 50;
+            line_count++;
+        }
+        fclose(file);
+    }
 }
 
 void DrawCommands(AppAssets app_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
 
-    DrawTextEx(app_assets.font, "COMANDOS", {540, 75}, 40, 1, GOLD);
+    DrawTextEx(app_assets.font, "COMMANDS", {545, 75}, 40, 1, GOLD);
 
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 }
@@ -144,27 +172,27 @@ void DrawCommands(AppAssets app_assets)
 void DrawCredits(AppAssets app_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
-    DrawTextEx(app_assets.font, "CRÉDITOS", {545, 75}, 40, 1, GOLD);
+    DrawTextEx(app_assets.font, "CREDITS", {575, 75}, 40, 1, GOLD);
 
-    DrawTextEx(app_assets.font, "Este jogo foi desenvolvido por:", {305, 200}, 30, 1, WHITE);
+    DrawTextEx(app_assets.font, "This game was developed by:", {305, 200}, 35, 1, WHITE);
 
-    DrawText(
-        "Arthur Oliveira - Graduando em Ciência da Computação (Bacharelado)\n"
-        "na Universidade Do Estado Do Rio Grande Do Norte (UERN)\n"
-        "Github: https://github.com/ByArthurOliveira",
-        305, 270, 20, WHITE);
+    DrawTextEx(app_assets.font,
+               "Arthur Oliveira - Undergraduate Student in Computer Science (Bachelor's Degree)\n"
+               "at the State University of Rio Grande do Norte (UERN)\n"
+               "Github: https://github.com/ByArthurOliveira",
+               {305, 270}, 25, 1, WHITE);
 
-    DrawText(
-        "Francisco Genyson - Graduando em Ciência da Computação (Bacharelado)\n"
-        "na Universidade Do Estado Do Rio Grande Do Norte (UERN)\n"
-        "Github: https://github.com/Extremois",
-        305, 370, 20, WHITE);
+    DrawTextEx(app_assets.font,
+               "Francisco Genyson - Undergraduate Student in Computer Science (Bachelor's Degree)\n"
+               "at the State University of Rio Grande do Norte (UERN)\n"
+               "Github: https://github.com/Extremois",
+               {305, 370}, 25, 1, WHITE);
 
-    DrawText(
-        "Pedro Ricardo - Graduando em Ciência da Computação (Bacharelado)\n"
-        "na Universidade Do Estado Do Rio Grande Do Norte (UERN)\n"
-        "Github: https://github.com/pedroricardo14",
-        305, 470, 20, WHITE);
+    DrawTextEx(app_assets.font,
+               "Pedro Ricardo - Undergraduate Student in Computer Science (Bachelor's Degree)\n"
+               "at the State University of Rio Grande do Norte (UERN)\n"
+               "Github: https://github.com/pedroricardo14",
+               {305, 470}, 25, 1, WHITE);
 
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 }

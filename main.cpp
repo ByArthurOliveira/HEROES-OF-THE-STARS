@@ -6,6 +6,8 @@
 
 int main()
 {
+    OrganizeScoreboard();
+
     Login();
     InitializeApp(username);
 }

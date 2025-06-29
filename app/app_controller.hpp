@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "raylib.h"
 
 #include "app_assets.hpp"
@@ -66,8 +67,66 @@ void WriteScoreboard(Player player, char username[])
         return;
     }
 
-    fprintf(scoreboard, "%s,%d\n", username, player.score_record);
+    fprintf(scoreboard, "%s, %d\n", username, player.score_record);
 
     fclose(scoreboard);
 }
+
+void OrganizeScoreboard()
+{
+    FILE *scoreboard = fopen("db/scoreboard.csv", "r");
+    if (scoreboard == NULL)
+    {
+        return;
+    }
+
+    char lines[100][100];
+    int count = 0;
+
+    while (fgets(lines[count], sizeof(lines[count]), scoreboard) && count < 100)
+    {
+        // Remove o '\n' no final da linha (se existir)
+        lines[count][strcspn(lines[count], "\n")] = '\0';
+        count++;
+    }
+    fclose(scoreboard);
+
+    // Ordenar as linhas com base na pontuação (depois da vírgula)
+    for (int i = 0; i < count - 1; i++)
+    {
+        for (int j = i + 1; j < count; j++)
+        {
+            char *comma_i = strchr(lines[i], ',');
+            char *comma_j = strchr(lines[j], ',');
+
+            if (comma_i && comma_j) // Só continua se a vírgula foi encontrada
+            {
+                int score_i = atoi(comma_i + 1);
+                int score_j = atoi(comma_j + 1);
+
+                if (score_i < score_j)
+                {
+                    char temp[100];
+                    strcpy(temp, lines[i]);
+                    strcpy(lines[i], lines[j]);
+                    strcpy(lines[j], temp);
+                }
+            }
+        }
+    }
+
+    scoreboard = fopen("db/scoreboard.csv", "w");
+    if (scoreboard == NULL)
+    {
+        return;
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        fprintf(scoreboard, "%s\n", lines[i]); // Garante \n ao salvar
+    }
+
+    fclose(scoreboard);
+}
+
 #endif

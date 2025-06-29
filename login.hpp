@@ -6,6 +6,8 @@
 char input_text[MAX_INPUT_CHARS + 1] = "\0";
 bool edit_mode = false;
 
+Font font = LoadFont("assets/interface/Font.ttf");
+
 bool close_login = false;
 int Login()
 {
@@ -24,7 +26,7 @@ int Login()
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        DrawText("Informe seu nome de usuário", 85, 35, 20, DARKGRAY);
+        DrawTextEx(font, "Insert your username", {120, 35}, 20, 1, DARKGRAY);
 
         if (GuiTextBox((Rectangle){125, 95, 200, 40}, input_text, MAX_INPUT_CHARS, edit_mode))
         {
