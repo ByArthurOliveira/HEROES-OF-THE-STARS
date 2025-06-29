@@ -13,7 +13,7 @@ int Login()
 {
 
     SetConfigFlags(FLAG_WINDOW_TOPMOST);
-    InitWindow(450, 250, "HEROES OF THE STARS");
+    InitWindow(450, 250, "H.O.T.S. - Launcher v1.0.0");
     SetTargetFPS(75);
 
     while (!close_login)
