@@ -7,7 +7,6 @@ char input_text[MAX_INPUT_CHARS + 1] = "\0";
 bool edit_mode = false;
 
 bool close_login = false;
-
 int Login()
 {
 

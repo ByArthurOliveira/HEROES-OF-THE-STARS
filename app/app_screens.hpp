@@ -128,19 +128,15 @@ void DrawScoreboard(AppAssets app_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
+
+    DrawTextEx(app_assets.font, "PLACAR DE LIDERES", {470, 100}, 40, 1, GOLD);
 }
 
 void DrawCommands(AppAssets app_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
 
-    DrawText("COMANDOS", 540, 200, 40, GOLD);
-
-    DrawText("W - Mover para cima", 500, 300, 30, WHITE);
-    DrawText("S - Mover para baixo", 500, 350, 30, WHITE);
-    DrawText("A - Mover para a esquerda", 500, 400, 30, WHITE);
-    DrawText("D - Mover para a direita", 500, 450, 30, WHITE);
-    DrawText("SPACE - Atirar", 500, 500, 30, WHITE);
+    DrawTextEx(app_assets.font, "COMANDOS", {540, 100}, 40, 1, GOLD);
 
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 }
@@ -148,9 +144,9 @@ void DrawCommands(AppAssets app_assets)
 void DrawCredits(AppAssets app_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
-    DrawText("CREDITOS", 545, 100, 40, GOLD);
+    DrawTextEx(app_assets.font, "CREDITOS", {545, 100}, 40, 1, GOLD);
 
-    DrawText("Desenvolvido por:", 305, 200, 30, WHITE);
+    DrawTextEx(app_assets.font, "Este jogo foi desenvolvido por:", {305, 200}, 30, 1, WHITE);
 
     DrawText(
         "Arthur Oliveira - Graduando em Ciência da Computação (Bacharelado)\n"

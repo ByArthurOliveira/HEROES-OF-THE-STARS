@@ -52,8 +52,10 @@ float spawn_timer = 0.0f;
 float spawn_interval = 2.0f;
 
 Timer pause_text;
+Timer game_over_text;
 
-bool show_text;
+bool show_pause_text;
+bool show_game_over_text;
 
 void WriteScoreboard(Player player, char username[])
 {

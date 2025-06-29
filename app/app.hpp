@@ -118,7 +118,7 @@ int InitializeApp(char username[])
                     if (spawn_timer >= spawn_interval)
                     {
                         int chance = GetRandomValue(0, 9);
-                        if (chance == 0)
+                        if (chance == 0 && power_up.was_catched == false)
                         {
                             ResetPowerUP(power_up);
                             power_up.is_on_screen = true;
@@ -129,7 +129,6 @@ int InitializeApp(char username[])
                 else
                 {
                     UpdatePowerUP(power_up);
-
                     if (power_up.position.y > GetScreenHeight() + power_up.texture.height)
                     {
                         power_up.is_on_screen = false;
@@ -184,9 +183,9 @@ int InitializeApp(char username[])
             if (pause_app == true && player.health > 0)
             {
                 pause_text.real_time = GetTime();
-                show_text = ((int)(pause_text.real_time * 2)) % 2 == 0;
+                show_pause_text = ((int)(pause_text.real_time * 2)) % 2 == 0;
 
-                if (show_text)
+                if (show_pause_text)
                 {
                     DrawTextEx(app_assets.font, "JOGO PAUSADO", {75, 300}, 40, 1, GOLD);
                     DrawTextEx(app_assets.font, "PRESSIONE ESC PARA CONTINUAR", {75, 350}, 30, 1, WHITE);
@@ -200,8 +199,21 @@ int InitializeApp(char username[])
             }
             else if (pause_app == true && player.health <= 0)
             {
-                DrawText("GAME OVER", 75, 400, 25, RED);
-                DrawText("PRESSIONE ENTER PARA VOLTAR AO MENU!", 75, 450, 25, RED);
+
+                game_over_text.real_time = GetTime();
+                show_game_over_text = ((int)(game_over_text.real_time * 2)) % 2 == 0;
+
+                if (show_game_over_text)
+                {
+                    DrawTextEx(app_assets.font, "GAME OVER", {75, 300}, 40, 1, RED);
+                    DrawTextEx(app_assets.font, "PRESSIONE ENTER PARA RETORNAR PARA O MENU", {75, 350}, 30, 1, WHITE);
+                    DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
+                }
+                else
+                {
+                    DrawTextEx(app_assets.font, "PRESSIONE ENTER PARA RETORNAR PARA O MENU", {75, 350}, 30, 1, WHITE);
+                    DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
+                }
             }
 
             if ((pause_app == true) && (player.health <= 0) && (IsKeyPressed(KEY_ENTER)))
