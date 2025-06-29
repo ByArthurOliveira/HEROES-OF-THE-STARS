@@ -183,8 +183,20 @@ int InitializeApp(char username[])
 
             if (pause_app == true && player.health > 0)
             {
-                DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);
-                DrawText("PRESSIONE ESC PARA CONTINUAR!", 75, 450, 25, GOLD);
+                pause_text.real_time = GetTime();
+                show_text = ((int)(pause_text.real_time * 2)) % 2 == 0;
+
+                if (show_text)
+                {
+                    DrawTextEx(app_assets.font, "JOGO PAUSADO", {75, 300}, 40, 1, GOLD);
+                    DrawTextEx(app_assets.font, "PRESSIONE ESC PARA CONTINUAR", {75, 350}, 30, 1, WHITE);
+                    DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
+                }
+                else
+                {
+                    DrawTextEx(app_assets.font, "PRESSIONE ESC PARA CONTINUAR", {75, 350}, 30, 1, WHITE);
+                    DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
+                }
             }
             else if (pause_app == true && player.health <= 0)
             {

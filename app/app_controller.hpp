@@ -49,7 +49,11 @@ Timer laser_timer;
 
 Timer power_up_timer;
 float spawn_timer = 0.0f;
-float spawn_interval = 2.0f; // em segundos (ajustável)
+float spawn_interval = 2.0f;
+
+Timer pause_text;
+
+bool show_text;
 
 void WriteScoreboard(Player player, char username[])
 {
