@@ -75,7 +75,7 @@ int InitializeApp(char username[])
                 PlaySound(app_assets.confirm_option_sound);
             }
 
-            DrawMainMenu(app_assets, player, power_up);
+            DrawMainMenu(app_assets, player, power_up, username);
             break;
         }
 
@@ -117,7 +117,7 @@ int InitializeApp(char username[])
 
                     if (spawn_timer >= spawn_interval)
                     {
-                        int chance = GetRandomValue(0, 9);
+                        int chance = GetRandomValue(0, 39);
                         if (chance == 0 && power_up.was_catched == false)
                         {
                             ResetPowerUP(power_up);

@@ -116,7 +116,7 @@ Laser CreateLaserBase(Player &player)
     laser.hit_box = {
         laser.position.x,
         laser.position.y,
-        float(laser.texture.width),
+        float(laser.texture.width + 5),
         float(laser.texture.height)};
     return laser;
 }

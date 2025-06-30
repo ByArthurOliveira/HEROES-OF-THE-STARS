@@ -10,7 +10,7 @@
 #include "entities/player/player.hpp"
 #include "entities/asteroids/asteroids.hpp"
 
-#define MAX_INPUT_CHARS 32
+#define MAX_INPUT_CHARS 11
 
 float BG_SCROLL_SPEED = 150;
 float background_y0 = 0;

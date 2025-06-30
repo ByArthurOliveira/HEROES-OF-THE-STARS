@@ -6,7 +6,7 @@
 char input_text[MAX_INPUT_CHARS + 1] = "\0";
 bool edit_mode = false;
 
-Font font = LoadFont("assets/interface/Font.ttf");
+Font font;
 
 bool close_login = false;
 int Login()

@@ -147,7 +147,7 @@ void SpawnAsteroid(AsteroidManager *manager, int screen_width)
             asteroid->hit_box = {
                 asteroid->position.x,
                 asteroid->position.y,
-                (float)asteroid->texture.width,
+                (float)asteroid->texture.width+5,
                 (float)asteroid->texture.height};
 
             manager->active_count++;
@@ -302,7 +302,7 @@ void DrawAsteroids(AsteroidManager *manager)
 
 void DrawDifficultyInfo(AsteroidManager *manager, Font font)
 {
-    DrawTextEx(font, TextFormat("LEVEL %d", manager->difficulty_level), {21, 75}, 27, 1, GOLD);
+    DrawTextEx(font, TextFormat("LEVEL %d", manager->difficulty_level), {22, 75}, 22, 1, GOLD);
 
     float progress = manager->difficulty_timer / DIFFICULTY_INCREASE_INTERVAL;
     int bar_width = 200;

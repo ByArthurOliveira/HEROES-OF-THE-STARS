@@ -5,11 +5,12 @@
 #include "raylib.h"
 #include "app_controller.hpp"
 
-void DrawMainMenu(AppAssets app_assets, Player &player, PowerUP &power_up)
+void DrawMainMenu(AppAssets app_assets, Player &player, PowerUP &power_up, char username[])
 {
     DrawTexture(app_assets.menu_background, 0, 0, LIGHTGRAY);
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
     DrawTextEx(app_assets.font, "HEROES OF THE STARS", {83, 185}, 55, 1, WHITE);
+    DrawTextEx(app_assets.font, TextFormat("Welcome, %s!", username), {1075, 25}, 25, 1, GOLD);
 
     switch (selected_option)
     {
@@ -79,8 +80,8 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP p
     DrawTexture(app_assets.game_background, 0, (int)background_y0, LIGHTGRAY);
     DrawTexture(app_assets.game_background, 0, (int)background_y1, LIGHTGRAY);
 
-    DrawTextEx(app_assets.font, "SCORE:", {1150, 25}, 32, 1, GOLD);
-    DrawTextEx(app_assets.font, TextFormat("%i", player.score), {1250, 25}, 32, 1, GOLD);
+    DrawTextEx(app_assets.font, "SCORE:", {1150, 25}, 25, 1, GOLD);
+    DrawTextEx(app_assets.font, TextFormat("%i", player.score), {1240, 25}, 25, 1, GOLD);
 
     DrawTexture(app_assets.health_counter, 25, 25, WHITE);
     DrawTexture(app_assets._X, 70, 30, WHITE);
@@ -152,7 +153,7 @@ void DrawScoreboard(AppAssets app_assets)
                 }
             }
 
-            DrawTextEx(app_assets.font, TextFormat("%d - %s", line_count, scoreboard_content), (Vector2){305, (float)y_position}, 30, 1, WHITE);
+            DrawTextEx(app_assets.font, TextFormat("%d - %s", line_count, scoreboard_content), (Vector2){305, (float)y_position}, 30, 1, line_count == 1 ? GOLD : WHITE);
             y_position += 50;
             line_count++;
         }
@@ -174,25 +175,25 @@ void DrawCredits(AppAssets app_assets)
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
     DrawTextEx(app_assets.font, "CREDITS", {575, 75}, 40, 1, GOLD);
 
-    DrawTextEx(app_assets.font, "This game was developed by:", {305, 200}, 35, 1, WHITE);
+    DrawTextEx(app_assets.font, "This game was developed by:", {150, 200}, 35, 1, GOLD);
 
     DrawTextEx(app_assets.font,
                "Arthur Oliveira - Undergraduate Student in Computer Science (Bachelor's Degree)\n"
-               "at the State University of Rio Grande do Norte (UERN)\n"
-               "Github: https://github.com/ByArthurOliveira",
-               {305, 270}, 25, 1, WHITE);
+               "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n"
+               "GitHub: https://github.com/ByArthurOliveira",
+               {150, 270}, 24, 1, WHITE);
 
     DrawTextEx(app_assets.font,
                "Francisco Genyson - Undergraduate Student in Computer Science (Bachelor's Degree)\n"
-               "at the State University of Rio Grande do Norte (UERN)\n"
-               "Github: https://github.com/Extremois",
-               {305, 370}, 25, 1, WHITE);
+               "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n"
+               "GitHub: https://github.com/Extremois",
+               {150, 370}, 24, 1, WHITE);
 
     DrawTextEx(app_assets.font,
                "Pedro Ricardo - Undergraduate Student in Computer Science (Bachelor's Degree)\n"
-               "at the State University of Rio Grande do Norte (UERN)\n"
-               "Github: https://github.com/pedroricardo14",
-               {305, 470}, 25, 1, WHITE);
+               "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n"
+               "GitHub: https://github.com/pedroricardo14",
+               {150, 470}, 24, 1, WHITE);
 
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 }
