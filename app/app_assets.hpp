@@ -11,7 +11,7 @@ typedef struct AppAssets
     Texture2D blur;
     Texture2D health_counter;
     Texture2D numbers[4];
-    Texture2D _X;
+    Texture2D X;
     Music menu_music_theme;
     Sound confirm_option_sound;
     Sound switch_option_sound;
@@ -41,7 +41,7 @@ AppAssets LoadAppAssets()
         assets.numbers[i] = LoadTexture(TextFormat("assets/interface/%d.png", i));
     }
 
-    assets._X = LoadTexture("assets/interface/X.png");
+    assets.X = LoadTexture("assets/interface/X.png");
     assets.font = LoadFont("assets/interface/Font.ttf");
 
     return assets;
@@ -86,5 +86,35 @@ CutsceneAssets LoadCutsceneAssets()
     cutscene_assets.music = LoadMusicStream("assets/sounds/cutscene_audio.mp3");
     return cutscene_assets;
 }
+typedef struct CommandAssets
+{
+    Texture2D arrows[4];
+    Texture2D letters[4];
+    Texture2D attack;
+    Texture2D pause;
+    Texture2D boost;
+    Texture2D confirm;
 
+} CommandAssets;
+
+CommandAssets LoadCommandAssets()
+{
+    CommandAssets command_assets;
+    command_assets.arrows[0] = LoadTexture("assets/commands/up.png");
+    command_assets.arrows[1] = LoadTexture("assets/commands/down.png");
+    command_assets.arrows[2] = LoadTexture("assets/commands/left.png");
+    command_assets.arrows[3] = LoadTexture("assets/commands/aright.png");
+
+    command_assets.letters[0] = LoadTexture("assets/commands/W.png");
+    command_assets.letters[1] = LoadTexture("assets/commands/A.png");
+    command_assets.letters[2] = LoadTexture("assets/commands/S.png");
+    command_assets.letters[3] = LoadTexture("assets/commands/D.png");
+
+    command_assets.attack = LoadTexture("assets/commands/space.png");
+    command_assets.pause = LoadTexture("assets/commands/escape.png");
+    command_assets.boost = LoadTexture("assets/commands/shift.png");
+    command_assets.confirm = LoadTexture("assets/commands/enter.png");
+
+    return command_assets;
+}
 #endif

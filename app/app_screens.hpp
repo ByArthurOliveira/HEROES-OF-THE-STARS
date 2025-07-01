@@ -102,7 +102,7 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP p
     DrawTextEx(app_assets.font, TextFormat("%i", player.score), {1240, 25}, 25, 1, GOLD);
 
     DrawTexture(app_assets.health_counter, 25, 25, WHITE);
-    DrawTexture(app_assets._X, 70, 30, WHITE);
+    DrawTexture(app_assets.X, 70, 30, WHITE);
 
     switch (player.health)
     {

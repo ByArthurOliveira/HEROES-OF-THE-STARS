@@ -16,6 +16,7 @@ int InitializeApp(char username[])
     InitAudioDevice();
 
     AppAssets app_assets = LoadAppAssets();
+    CommandAssets commands = LoadCommandAssets();
     CutsceneAssets cutscene_assets = LoadCutsceneAssets();
     SetMusicVolume(app_assets.menu_music_theme, 0.35);
     SetMusicVolume(cutscene_assets.music, 1.1);
@@ -405,7 +406,7 @@ int InitializeApp(char username[])
     {
         UnloadTexture(app_assets.numbers[i]);
     }
-    UnloadTexture(app_assets._X);
+    UnloadTexture(app_assets.X);
     UnloadFont(app_assets.font);
 
     UnloadTexture(player.texture);
