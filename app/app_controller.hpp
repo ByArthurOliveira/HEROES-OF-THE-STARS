@@ -12,6 +12,23 @@
 
 #define MAX_INPUT_CHARS 11
 
+#define NUM_IMAGES 3
+#define FADE_TIME 2.0f    // Tempo de fade-in e fade-out em segundos
+#define DISPLAY_TIME 5.0f // Tempo de exibição da imagem
+
+typedef enum
+{
+    FADE_IN,
+    SHOW,
+    FADE_OUT,
+    NEXT_IMAGE
+} TransitionState;
+
+int image_index = 0;
+float timer = 0.0f;
+float alpha = 0.0f;
+TransitionState state = FADE_IN;
+
 float BG_SCROLL_SPEED = 150;
 float background_y0 = 0;
 float background_y1 = 0;

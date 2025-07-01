@@ -70,4 +70,21 @@ void UpdateGameBackground(Texture2D game_background, float &background_y0, float
     }
 }
 
+typedef struct CutsceneAssets
+{
+    Texture2D images[3]; // Assuming 3 images for the cutscene
+    Music music;         // Music for the cutscene
+} CutsceneAssets;
+
+CutsceneAssets LoadCutsceneAssets()
+{
+    CutsceneAssets cutscene_assets;
+    for (int i = 0; i < 3; i++)
+    {
+        cutscene_assets.images[i] = LoadTexture(TextFormat("assets/cutscene/cutscene_%d.png",i)); // Initialize to zero
+    }
+    cutscene_assets.music = LoadMusicStream("assets/sounds/cutscene_audio.mp3");
+    return cutscene_assets;
+}
+
 #endif

@@ -16,11 +16,13 @@ int InitializeApp(char username[])
     InitAudioDevice();
 
     AppAssets app_assets = LoadAppAssets();
+    CutsceneAssets cutscene_assets = LoadCutsceneAssets();
     SetMusicVolume(app_assets.menu_music_theme, 0.35);
     SetSoundVolume(app_assets.confirm_option_sound, 0.75);
     SetSoundVolume(app_assets.switch_option_sound, 0.75);
     SetSoundVolume(app_assets.gameover_sound, 0.75);
     SetSoundVolume(app_assets.hit_sound, 0.25);
+    PlayMusicStream(cutscene_assets.music);
     PlayMusicStream(app_assets.menu_music_theme);
 
     player = CreatePlayerBase();
@@ -303,10 +305,71 @@ int InitializeApp(char username[])
 
         case CUTSCENE:
         {
-            if (IsKeyPressed(KEY_ENTER))
-                current_app_state = MAIN_MENU;
+            UpdateMusicStream(cutscene_assets.music);
 
-            DrawCutscene();
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                StopMusicStream(cutscene_assets.music);
+                current_app_state = MAIN_MENU;
+            }
+
+            float frametime = GetFrameTime();
+            timer += frametime;
+
+            switch (state)
+            {
+            case FADE_IN:
+                alpha = 1.0f - (timer / FADE_TIME); // Escurecimento reverso (ficando claro)
+                if (timer >= FADE_TIME)
+                {
+                    timer = 0.0f;
+                    alpha = 0.0f;
+                    state = SHOW;
+                }
+                break;
+
+            case SHOW:
+                alpha = 0.0f;
+                if (timer >= DISPLAY_TIME)
+                {
+                    timer = 0.0f;
+                    state = FADE_OUT;
+                }
+                break;
+
+            case FADE_OUT:
+                alpha = timer / FADE_TIME; // Escurecendo
+                if (timer >= FADE_TIME)
+                {
+                    timer = 0.0f;
+                    alpha = 1.0f;
+                    state = NEXT_IMAGE;
+                }
+                break;
+
+            case NEXT_IMAGE:
+                image_index++;
+                if (image_index >= NUM_IMAGES)
+                {
+                    // Finalizar apresentação
+                    StopMusicStream(cutscene_assets.music);
+                    current_app_state = MAIN_MENU;
+                    break;
+                }
+                state = FADE_IN;
+                timer = 0.0f;
+                break;
+            }
+
+            // Desenha a imagem normalmente (sem alteração de alpha)
+            DrawTexture(cutscene_assets.images[image_index],
+                        (GetScreenWidth() - cutscene_assets.images[image_index].width) / 2,
+                        (GetScreenHeight() - cutscene_assets.images[image_index].height) / 2,
+                        LIGHTGRAY);
+
+            // Desenha o retângulo preto por cima com alpha controlado
+            DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, alpha));
+
             break;
         }
         }
@@ -321,6 +384,12 @@ int InitializeApp(char username[])
 
     CloseAudioDevice();
     CloseWindow();
+
+    for (int i = 0; i < NUM_IMAGES; i++)
+    {
+        UnloadTexture(cutscene_assets.images[i]);
+    }
+    UnloadMusicStream(cutscene_assets.music);
 
     UnloadMusicStream(app_assets.menu_music_theme);
     UnloadSound(app_assets.confirm_option_sound);

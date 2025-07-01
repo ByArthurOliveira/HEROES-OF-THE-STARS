@@ -195,11 +195,6 @@ void DrawCredits(AppAssets app_assets)
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 }
 
-void DrawCutscene()
-{
-    DrawText("Cutscene is not implemented yet.", 400, 300, 20, RED);
-}
-
 bool ExitApp()
 {
     return close_app = true;
