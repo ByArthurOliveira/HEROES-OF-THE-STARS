@@ -18,10 +18,11 @@ int InitializeApp(char username[])
     AppAssets app_assets = LoadAppAssets();
     CutsceneAssets cutscene_assets = LoadCutsceneAssets();
     SetMusicVolume(app_assets.menu_music_theme, 0.35);
+    SetMusicVolume(cutscene_assets.music, 1.1);
     SetSoundVolume(app_assets.confirm_option_sound, 0.75);
     SetSoundVolume(app_assets.switch_option_sound, 0.75);
     SetSoundVolume(app_assets.gameover_sound, 0.75);
-    SetSoundVolume(app_assets.hit_sound, 0.25);
+    SetSoundVolume(app_assets.hit_sound, 0.35);
     PlayMusicStream(cutscene_assets.music);
     PlayMusicStream(app_assets.menu_music_theme);
 

@@ -81,7 +81,7 @@ CutsceneAssets LoadCutsceneAssets()
     CutsceneAssets cutscene_assets;
     for (int i = 0; i < 3; i++)
     {
-        cutscene_assets.images[i] = LoadTexture(TextFormat("assets/cutscene/cutscene_%d.png",i)); // Initialize to zero
+        cutscene_assets.images[i] = LoadTexture(TextFormat("assets/cutscene/cutscene_%d.png", i)); // Initialize to zero
     }
     cutscene_assets.music = LoadMusicStream("assets/sounds/cutscene_audio.mp3");
     return cutscene_assets;
