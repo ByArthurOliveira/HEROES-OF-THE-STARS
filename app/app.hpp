@@ -16,7 +16,7 @@ int InitializeApp(char username[])
     InitAudioDevice();
 
     AppAssets app_assets = LoadAppAssets();
-    CommandAssets commands = LoadCommandAssets();
+    CommandAssets commands_assets = LoadCommandAssets();
     CutsceneAssets cutscene_assets = LoadCutsceneAssets();
     SetMusicVolume(app_assets.menu_music_theme, 0.35);
     SetMusicVolume(cutscene_assets.music, 1.1);
@@ -278,7 +278,7 @@ int InitializeApp(char username[])
             if (IsKeyPressed(KEY_ESCAPE))
                 current_app_state = MAIN_MENU;
 
-            DrawCommands(app_assets);
+            DrawCommands(app_assets, commands_assets);
             break;
         }
 

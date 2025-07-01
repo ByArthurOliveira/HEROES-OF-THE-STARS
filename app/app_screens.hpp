@@ -157,7 +157,7 @@ void DrawScoreboard(AppAssets app_assets)
     }
 }
 
-void DrawCommands(AppAssets app_assets)
+void DrawCommands(AppAssets app_assets, CommandAssets command_assets)
 {
     DrawTexture(app_assets.menu_background, 0, 0, DARKGRAY);
 
