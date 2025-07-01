@@ -35,7 +35,7 @@ AppAssets LoadAppAssets()
 
     assets.gameover_sound = LoadSound("assets/sounds/gameover_sound.mp3");
     assets.hit_sound = LoadSound("assets/sounds/hit_sound.mp3");
-    
+
     for (int i = 0; i < 4; i++)
     {
         assets.numbers[i] = LoadTexture(TextFormat("assets/interface/%d.png", i));

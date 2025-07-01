@@ -147,7 +147,7 @@ void SpawnAsteroid(AsteroidManager *manager, int screen_width)
             asteroid->hit_box = {
                 asteroid->position.x,
                 asteroid->position.y,
-                (float)asteroid->texture.width+5,
+                (float)asteroid->texture.width + 5,
                 (float)asteroid->texture.height};
 
             manager->active_count++;

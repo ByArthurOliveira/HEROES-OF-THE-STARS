@@ -300,8 +300,16 @@ int InitializeApp(char username[])
             ExitApp();
             break;
         }
-        }
 
+        case CUTSCENE:
+        {
+            if (IsKeyPressed(KEY_ENTER))
+                current_app_state = MAIN_MENU;
+
+            DrawCutscene();
+            break;
+        }
+        }
         DrawFPS(10, 10);
         EndDrawing();
     }

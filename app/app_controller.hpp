@@ -31,10 +31,11 @@ enum AppState
     SCOREBOARD,
     COMMANDS,
     CREDITS,
-    EXIT
+    EXIT,
+    CUTSCENE,
 };
 
-AppState current_app_state = MAIN_MENU;
+AppState current_app_state = CUTSCENE;
 int selected_option = 1;
 
 typedef struct Timer
