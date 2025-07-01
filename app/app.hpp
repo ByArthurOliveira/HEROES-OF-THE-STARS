@@ -16,7 +16,11 @@ int InitializeApp(char username[])
     InitAudioDevice();
 
     AppAssets app_assets = LoadAppAssets();
-    SetMusicVolume(app_assets.menu_music_theme, 0.25);
+    SetMusicVolume(app_assets.menu_music_theme, 0.35);
+    SetSoundVolume(app_assets.confirm_option_sound, 0.75);
+    SetSoundVolume(app_assets.switch_option_sound, 0.75);
+    SetSoundVolume(app_assets.gameover_sound, 0.75);
+    SetSoundVolume(app_assets.hit_sound, 0.25);
     PlayMusicStream(app_assets.menu_music_theme);
 
     player = CreatePlayerBase();
@@ -168,9 +172,11 @@ int InitializeApp(char username[])
 
                 if (CheckAsteroidPlayerCollision(&asteroid_manager, player.hit_box))
                 {
+                    PlaySound(app_assets.hit_sound);
                     player.health--;
                     if (player.health <= 0)
                     {
+                        PlaySound(app_assets.gameover_sound);
                         pause_app = true;
                         if (IsKeyPressed(KEY_ESCAPE))
                             pause_app = true;
@@ -311,6 +317,8 @@ int InitializeApp(char username[])
     UnloadMusicStream(app_assets.menu_music_theme);
     UnloadSound(app_assets.confirm_option_sound);
     UnloadSound(app_assets.switch_option_sound);
+    UnloadSound(app_assets.gameover_sound);
+    UnloadSound(app_assets.hit_sound);
     UnloadTexture(app_assets.menu_background);
     UnloadTexture(app_assets.game_background);
     UnloadTexture(app_assets.blur);

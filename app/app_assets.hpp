@@ -15,6 +15,8 @@ typedef struct AppAssets
     Music menu_music_theme;
     Sound confirm_option_sound;
     Sound switch_option_sound;
+    Sound gameover_sound;
+    Sound hit_sound;
     Font font;
 } AppAssets;
 
@@ -31,6 +33,9 @@ AppAssets LoadAppAssets()
     assets.confirm_option_sound = LoadSound("assets/sounds/confirm_sound_effect.mp3");
     assets.switch_option_sound = LoadSound("assets/sounds/switch_option_sound.mp3");
 
+    assets.gameover_sound = LoadSound("assets/sounds/gameover_sound.mp3");
+    assets.hit_sound = LoadSound("assets/sounds/hit_sound.mp3");
+    
     for (int i = 0; i < 4; i++)
     {
         assets.numbers[i] = LoadTexture(TextFormat("assets/interface/%d.png", i));

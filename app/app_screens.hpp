@@ -179,21 +179,18 @@ void DrawCredits(AppAssets app_assets)
 
     DrawTextEx(app_assets.font,
                "Arthur Oliveira - Undergraduate Student in Computer Science (Bachelor's Degree)\n"
-               "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n"
-               "GitHub: https://github.com/ByArthurOliveira",
-               {150, 270}, 24, 1, WHITE);
+               "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n",
+               {150, 270}, 21, 1, WHITE);
 
     DrawTextEx(app_assets.font,
                "Francisco Genyson - Undergraduate Student in Computer Science (Bachelor's Degree)\n"
-               "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n"
-               "GitHub: https://github.com/Extremois",
-               {150, 370}, 24, 1, WHITE);
+               "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n",
+               {150, 370}, 21, 1, WHITE);
 
     DrawTextEx(app_assets.font,
                "Pedro Ricardo - Undergraduate Student in Computer Science (Bachelor's Degree)\n"
-               "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n"
-               "GitHub: https://github.com/pedroricardo14",
-               {150, 470}, 24, 1, WHITE);
+               "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n",
+               {150, 470}, 21, 1, WHITE);
 
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 }
