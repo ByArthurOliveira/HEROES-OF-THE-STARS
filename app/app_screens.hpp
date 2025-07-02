@@ -210,7 +210,7 @@ void DrawCommands(AppAssets app_assets, CommandAssets command_assets)
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 
     // Seção de movimentos
-    DrawTextEx(app_assets.font, "MOVEMENTS", {955, 200}, 35, 1, GOLD);
+    DrawTextEx(app_assets.font, "MOVEMENTS:", {955, 200}, 35, 1, WHITE);
     DrawTexture(command_assets.arrows[0], 1025, 290, WHITE);
     DrawTexture(command_assets.arrows[1], 1025, 340, WHITE);
     DrawTexture(command_assets.arrows[2], 975, 340, WHITE);
@@ -223,17 +223,16 @@ void DrawCommands(AppAssets app_assets, CommandAssets command_assets)
     DrawTexture(command_assets.letters[3], 1075, 540, WHITE);
 
     // Ações e atalhos
-    DrawTextEx(app_assets.font, "ACTIONS", {150, 200}, 35, 1, GOLD);
-    DrawTextEx(app_assets.font, "ATTACK:", {150, 275}, 35, 1, WHITE);
-    DrawTexture(command_assets.attack, 325, 261.75, WHITE);
-    DrawTextEx(app_assets.font, "BOOST:", {150, 375}, 35, 1, WHITE);
-    DrawTexture(command_assets.boost, 325, 361.75, WHITE);
-    DrawTextEx(app_assets.font, "CONFIRM", {150, 475}, 35, 1, WHITE);
-    DrawTexture(command_assets.confirm, 325, 461.75, WHITE);
-    DrawTextEx(app_assets.font, "PAUSE", {150, 575}, 35, 1, WHITE);
-    DrawTexture(command_assets.pause, 325, 561.75, WHITE);
-    DrawTextEx(app_assets.font, "MUTE:", {150, 675}, 35, 1, WHITE);
-    DrawTexture(command_assets.mute, 325, 661.75, WHITE);
+    DrawTextEx(app_assets.font, "ATTACK:", {150, 200}, 35, 1, WHITE);
+    DrawTexture(command_assets.attack, 325, 200 - 10, WHITE);
+    DrawTextEx(app_assets.font, "BOOST:", {150, 300}, 35, 1, WHITE);
+    DrawTexture(command_assets.boost, 325, 300 - 10, WHITE);
+    DrawTextEx(app_assets.font, "CONFIRM:", {150, 400}, 35, 1, WHITE);
+    DrawTexture(command_assets.confirm, 325, 400 - 10, WHITE);
+    DrawTextEx(app_assets.font, "PAUSE:", {150, 500}, 35, 1, WHITE);
+    DrawTexture(command_assets.pause, 325, 500 - 10, WHITE);
+    DrawTextEx(app_assets.font, "MUTE:", {150, 600}, 35, 1, WHITE);
+    DrawTexture(command_assets.mute, 325, 600 - 10, WHITE);
 }
 
 // -----------------------------------------------------
