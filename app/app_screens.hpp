@@ -213,15 +213,15 @@ void DrawCommands(AppAssets app_assets, CommandAssets command_assets)
     // Ações e atalhos
     DrawTextEx(app_assets.font, "ACTIONS", {1075, 200}, 35, 1, GOLD);
     DrawTextEx(app_assets.font, "ATTACK:", {975, 275}, 35, 1, WHITE);
-    DrawTexture(command_assets.attack, 1175, 265, WHITE);
+    DrawTexture(command_assets.attack, 1175, 262, WHITE);
     DrawTextEx(app_assets.font, "PAUSE:", {975, 375}, 35, 1, WHITE);
-    DrawTexture(command_assets.pause, 1175, 365, WHITE);
+    DrawTexture(command_assets.pause, 1175, 362, WHITE);
     DrawTextEx(app_assets.font, "BOOST:", {975, 475}, 35, 1, WHITE);
-    DrawTexture(command_assets.boost, 1175, 465, WHITE);
+    DrawTexture(command_assets.boost, 1175, 462, WHITE);
     DrawTextEx(app_assets.font, "CONFIRM:", {975, 575}, 35, 1, WHITE);
-    DrawTexture(command_assets.confirm, 1175, 565, WHITE);
+    DrawTexture(command_assets.confirm, 1175, 562, WHITE);
     DrawTextEx(app_assets.font, "MUTE:", {975, 675}, 35, 1, WHITE);
-    DrawTexture(command_assets.mute, 1175, 665, WHITE);
+    DrawTexture(command_assets.mute, 1175, 662, WHITE);
 }
 
 // Tela de créditos do jogo
