@@ -1,9 +1,11 @@
 #ifndef ASTEROIDS_HPP
 #define ASTEROIDS_HPP
 
+// Bibliotecas padrão e Raylib
 #include <stdio.h>
 #include "raylib.h"
 
+// Constantes de configuração
 #define MAX_ASTEROIDS 50
 #define ASTEROID_MIN_SPEED 75.0f
 #define ASTEROID_MAX_SPEED 150.0f
@@ -11,19 +13,21 @@
 #define DIFFICULTY_INCREASE_INTERVAL 15.0f
 #define POINTS_LOST_PER_ASTEROID 5
 
+// Estrutura de um asteroide individual
 typedef struct Asteroid
 {
-    Vector2 position;
-    Vector2 velocity;
-    Texture2D texture;
-    Rectangle hit_box;
-    float rotation;
-    float rotation_speed;
-    bool is_active;
-    int health;
-    int size_type;
+    Vector2 position;     // Posição na tela
+    Vector2 velocity;     // Velocidade de movimento
+    Texture2D texture;    // Textura do asteroide
+    Rectangle hit_box;    // Caixa de colisão
+    float rotation;       // Ângulo de rotação
+    float rotation_speed; // Velocidade de rotação
+    bool is_active;       // Ativo ou não na cena
+    int health;           // Vida do asteroide
+    int size_type;        // Tamanho (0: pequeno, 1: médio, 2: grande)
 } Asteroid;
 
+// Gerenciador de todos os asteroides
 typedef struct AsteroidManager
 {
     Asteroid asteroids[MAX_ASTEROIDS];
@@ -40,6 +44,7 @@ typedef struct AsteroidManager
     int difficulty_level;
 } AsteroidManager;
 
+// Inicializa o gerenciador de asteroides com valores padrão
 AsteroidManager CreateAsteroidManager()
 {
     AsteroidManager manager;
@@ -73,6 +78,7 @@ AsteroidManager CreateAsteroidManager()
     return manager;
 }
 
+// Aumenta a dificuldade do jogo com o tempo
 void IncreaseDifficulty(AsteroidManager *manager)
 {
     manager->difficulty_level++;
@@ -93,6 +99,7 @@ void IncreaseDifficulty(AsteroidManager *manager)
     if (manager->current_max_speed > 350.0f)
         manager->current_max_speed = 350.0f;
 
+    // Logs para depuração
     printf("Dificuldade aumentada! Nível: %d\n", manager->difficulty_level);
     printf("Spawn interval: %.2f, Speed: %.0f-%.0f\n",
            manager->current_spawn_interval,
@@ -100,6 +107,7 @@ void IncreaseDifficulty(AsteroidManager *manager)
            manager->current_max_speed);
 }
 
+// Gera um novo asteroide com base na dificuldade
 void SpawnAsteroid(AsteroidManager *manager, int screen_width)
 {
     for (int i = 0; i < MAX_ASTEROIDS; i++)
@@ -156,10 +164,12 @@ void SpawnAsteroid(AsteroidManager *manager, int screen_width)
     }
 }
 
+// Atualiza os asteroides na tela e retorna os pontos perdidos
 int UpdateAsteroids(AsteroidManager *manager, float frametime, int screen_width, int screen_height)
 {
     int points_lost = 0;
 
+    // Verifica se é hora de aumentar a dificuldade
     manager->difficulty_timer += frametime;
     if (manager->difficulty_timer >= DIFFICULTY_INCREASE_INTERVAL)
     {
@@ -167,6 +177,7 @@ int UpdateAsteroids(AsteroidManager *manager, float frametime, int screen_width,
         manager->difficulty_timer = 0.0f;
     }
 
+    // Verifica se é hora de spawnar um novo asteroide
     manager->spawn_timer += frametime;
     if (manager->spawn_timer >= manager->current_spawn_interval)
     {
@@ -174,6 +185,7 @@ int UpdateAsteroids(AsteroidManager *manager, float frametime, int screen_width,
         manager->spawn_timer = 0.0f;
     }
 
+    // Atualiza posição e rotação de cada asteroide ativo
     for (int i = 0; i < MAX_ASTEROIDS; i++)
     {
         if (manager->asteroids[i].is_active)
@@ -187,6 +199,7 @@ int UpdateAsteroids(AsteroidManager *manager, float frametime, int screen_width,
             asteroid->hit_box.x = asteroid->position.x;
             asteroid->hit_box.y = asteroid->position.y;
 
+            // Remove asteroide se sair da tela
             if (asteroid->position.y > screen_height + 50)
             {
                 asteroid->is_active = false;
@@ -199,6 +212,7 @@ int UpdateAsteroids(AsteroidManager *manager, float frametime, int screen_width,
     return points_lost;
 }
 
+// Verifica colisões entre lasers e asteroides, retornando a pontuação obtida
 int CheckAsteroidLaserCollisions(AsteroidManager *manager, Laser lasers[], int max_lasers)
 {
     int score_gained = 0;
@@ -255,6 +269,7 @@ int CheckAsteroidLaserCollisions(AsteroidManager *manager, Laser lasers[], int m
     return score_gained;
 }
 
+// Verifica colisão entre jogador e asteroides
 bool CheckAsteroidPlayerCollision(AsteroidManager *manager, Rectangle player_hitbox)
 {
     for (int i = 0; i < MAX_ASTEROIDS; i++)
@@ -273,6 +288,7 @@ bool CheckAsteroidPlayerCollision(AsteroidManager *manager, Rectangle player_hit
     return false;
 }
 
+// Desenha os asteroides ativos com rotação
 void DrawAsteroids(AsteroidManager *manager)
 {
     for (int i = 0; i < MAX_ASTEROIDS; i++)
@@ -300,6 +316,7 @@ void DrawAsteroids(AsteroidManager *manager)
     }
 }
 
+// Desenha a barra de dificuldade e o nível atual
 void DrawDifficultyInfo(AsteroidManager *manager, Font font)
 {
     DrawTextEx(font, TextFormat("LEVEL %d", manager->difficulty_level), {22, 75}, 22, 1, GOLD);
@@ -313,6 +330,7 @@ void DrawDifficultyInfo(AsteroidManager *manager, Font font)
     DrawRectangleLines(25, 105, bar_width, bar_height, WHITE);
 }
 
+// Reseta o estado do gerenciador de asteroides
 void ResetAsteroidManager(AsteroidManager *manager)
 {
     manager->spawn_timer = 0.0f;
@@ -330,6 +348,7 @@ void ResetAsteroidManager(AsteroidManager *manager)
     }
 }
 
+// Libera os recursos utilizados pelo gerenciador
 void UnloadAsteroidManager(AsteroidManager *manager)
 {
     UnloadTexture(manager->small_texture);
