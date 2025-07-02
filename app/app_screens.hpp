@@ -103,9 +103,6 @@ void DrawGameplay(AppAssets app_assets, Player player, Laser lasers[], PowerUP p
     if (!power_up.was_catched)
         DrawTexture(power_up.texture, power_up.position.x, power_up.position.y, WHITE);
 
-    // Desenha a caixa de colisão do power-up
-    DrawRectangleLinesEx(power_up.hit_box, 2, RED);
-
     // Desenha todos os asteroides
     DrawAsteroids(&asteroid_manager);
 
