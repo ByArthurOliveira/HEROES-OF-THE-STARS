@@ -6,9 +6,7 @@
 
 int main()
 {
-    OrganizeScoreboard(); // Organiza o arquivo de placar, ordenando os scores antes de iniciar
-
-    Login(); // Executa a rotina de login para obter o nome do usuário
-
+    OrganizeScoreboard();   // Organiza o arquivo de placar, ordenando os scores antes de iniciar
+    Login();                // Executa a rotina de login para obter o nome do usuário
     InitializeApp(username); // Inicializa o jogo/app com o nome do usuário obtido no login
 }

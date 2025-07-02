@@ -10,14 +10,12 @@
 char input_text[MAX_INPUT_CHARS + 1] = "\0"; // Armazena o texto inserido pelo usuário (com +1 para o caractere nulo)
 bool edit_mode = false;                      // Indica se o modo de edição do textbox está ativado
 
-Font font; // Fonte personalizada a ser usada na interface
-
+Font font;                // Fonte personalizada a ser usada na interface
 bool close_login = false; // Flag para controle de encerramento da janela de login
 
 // Função Login - Exibe a interface de login do launcher
 int Login()
 {
-
     // Configura a janela para ficar sempre no topo
     SetConfigFlags(FLAG_WINDOW_TOPMOST | FLAG_VSYNC_HINT);
 
