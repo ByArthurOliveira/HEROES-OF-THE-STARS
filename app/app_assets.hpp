@@ -103,7 +103,7 @@ CommandAssets LoadCommandAssets()
     command_assets.arrows[0] = LoadTexture("assets/commands/up.png");
     command_assets.arrows[1] = LoadTexture("assets/commands/down.png");
     command_assets.arrows[2] = LoadTexture("assets/commands/left.png");
-    command_assets.arrows[3] = LoadTexture("assets/commands/aright.png");
+    command_assets.arrows[3] = LoadTexture("assets/commands/right.png");
 
     command_assets.letters[0] = LoadTexture("assets/commands/W.png");
     command_assets.letters[1] = LoadTexture("assets/commands/A.png");

@@ -164,6 +164,25 @@ void DrawCommands(AppAssets app_assets, CommandAssets command_assets)
     DrawTextEx(app_assets.font, "COMMANDS", {545, 75}, 40, 1, GOLD);
 
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
+
+    DrawTexture(command_assets.arrows[0], 615, 280, WHITE);
+    DrawTexture(command_assets.arrows[1], 615, 400, WHITE);
+    DrawTexture(command_assets.arrows[2], 540, 340, WHITE);
+    DrawTexture(command_assets.arrows[3], 690, 340, WHITE);
+    DrawTexture(command_assets.letters[0], 200, 290, WHITE);
+    DrawTexture(command_assets.letters[1], 150, 340, WHITE);
+    DrawTexture(command_assets.letters[2], 200, 340, WHITE);
+    DrawTexture(command_assets.letters[3], 250, 340, WHITE);
+    DrawTexture(command_assets.attack, 1000, 200, WHITE);
+    DrawText("Atacar", 1070, 220, 30, GOLD);
+    DrawTexture(command_assets.pause, 1000, 300, WHITE);
+    DrawText("Voltar", 1070, 320, 30, GOLD);
+    DrawTexture(command_assets.boost, 1000, 400, WHITE);
+    DrawText("Boost", 1070, 420, 30, GOLD);
+    DrawTexture(command_assets.confirm, 1000, 500, WHITE);
+    DrawText("Confirmar", 1070, 520, 30, GOLD);
+
+    DrawText("M - Mutar", 150, 600, 30, GOLD);
 }
 
 void DrawCredits(AppAssets app_assets)
