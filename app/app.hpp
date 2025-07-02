@@ -137,7 +137,7 @@ int InitializeApp(char username[])
                     {
                         if (spawn_timer >= spawn_interval)
                         {
-                            int chance = GetRandomValue(0, 1);
+                            int chance = GetRandomValue(0, 10);
                             if (chance == 0 && !power_up.was_catched)
                             {
                                 ResetPowerUP(power_up);
