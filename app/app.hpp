@@ -184,7 +184,7 @@ int InitializeApp(char username[])
                     // Atualiza posição dos lasers
                     UpdateLaser(lasers);
 
-                    // Atualiza asteroides e contabiliza pontos perdidos
+                    // Atualiza asteroides e contabiliza pontos perdidos (caso saiam da tela)
                     int points_lost = UpdateAsteroids(&asteroid_manager, GetFrameTime(), GetScreenWidth(), GetScreenHeight());
                     player.score -= points_lost;
                     if (player.score < 0)
@@ -197,11 +197,11 @@ int InitializeApp(char username[])
                     // Verifica colisão do jogador com asteroide
                     if (CheckAsteroidPlayerCollision(&asteroid_manager, player.hit_box))
                     {
-                        PlaySound(app_assets.hit_sound);
-                        player.health--;
+                        PlaySound(app_assets.hit_sound); // Som de impacto
+                        player.health--; // Diminui vida do jogador
                         if (player.health <= 0)
                         {
-                            PlaySound(app_assets.gameover_sound);
+                            PlaySound(app_assets.gameover_sound); // Som de game over
                             pause_app = true;
                         }
                     }

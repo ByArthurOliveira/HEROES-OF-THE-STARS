@@ -6,41 +6,41 @@
 #include "raylib.h"
 
 // Constantes de configuração
-#define MAX_ASTEROIDS 50
-#define ASTEROID_MIN_SPEED 75.0f
-#define ASTEROID_MAX_SPEED 150.0f
-#define ASTEROID_SPAWN_INTERVAL 2.0f
-#define DIFFICULTY_INCREASE_INTERVAL 15.0f
-#define POINTS_LOST_PER_ASTEROID 5
+#define MAX_ASTEROIDS 50          // Número máximo de asteroides ativos
+#define ASTEROID_MIN_SPEED 75.0f    // Velocidade mínima 
+#define ASTEROID_MAX_SPEED 150.0f   // e máxima dos asteroides
+#define ASTEROID_SPAWN_INTERVAL 2.0f // Intervalo inicial de spawn
+#define DIFFICULTY_INCREASE_INTERVAL 15.0f // Intervalo para aumentar a dificuldade
+#define POINTS_LOST_PER_ASTEROID 5 // Pontos perdidos quando um asteroide sai da tela
 
 // ─────────────────────────────────────────────
 // Estrutura de um asteroide individual
 typedef struct Asteroid {
-    Vector2 position;
-    Vector2 velocity;
+    Vector2 position; // Posição do asteroide
+    Vector2 velocity; // Velocidade do asteroide
     Texture2D texture;
-    Rectangle hit_box;
+    Rectangle hit_box; // Caixa de colisão do asteroide
     float rotation;
     float rotation_speed;
     bool is_active;
-    int health;
-    int size_type;
+    int health; // Vida do asteroide
+    int size_type; // 0: pequeno, 1: médio, 2: grande
 } Asteroid;
 
 // Gerenciador de todos os asteroides
 typedef struct AsteroidManager {
-    Asteroid asteroids[MAX_ASTEROIDS];
-    Texture2D small_texture;
-    Texture2D medium_texture;
-    Texture2D large_texture;
-    Sound destruction_sound;
-    float spawn_timer;
+    Asteroid asteroids[MAX_ASTEROIDS];  // Array de asteroides
+    Texture2D small_texture; // tamanho
+    Texture2D medium_texture; // tamanho
+    Texture2D large_texture; // tamanho
+    Sound destruction_sound; // Som de destruição
+    float spawn_timer; 
     float difficulty_timer;
-    float current_spawn_interval;
-    float current_min_speed;
-    float current_max_speed;
-    int active_count;
-    int difficulty_level;
+    float current_spawn_interval; // Intervalo de spawn atual
+    float current_min_speed; // Velocidade mínima atual
+    float current_max_speed; // Velocidade máxima atual
+    int active_count; // Contador de asteroides ativos
+    int difficulty_level; // Nível de dificuldade atual
 } AsteroidManager;
 
 // ─────────────────────────────────────────────
@@ -77,21 +77,23 @@ AsteroidManager CreateAsteroidManager() {
 
 // Aumenta a dificuldade com o tempo
 void IncreaseDifficulty(AsteroidManager* manager) {
-    manager->difficulty_level++;
+    manager->difficulty_level++; // Aumenta o nível de dificuldade (balanceamento level)
 
     manager->current_spawn_interval = ASTEROID_SPAWN_INTERVAL * (0.85f / manager->difficulty_level);
+    // (balanceamento do tempo de spawn)
     if (manager->current_spawn_interval < 0.25f)
         manager->current_spawn_interval = 0.25f;
 
     float speed_multiplier = 1.0f + (manager->difficulty_level - 1) * 0.3f;
     manager->current_min_speed = ASTEROID_MIN_SPEED * speed_multiplier;
     manager->current_max_speed = ASTEROID_MAX_SPEED * speed_multiplier;
-
+    // (balanceamento da velocidade dos asteroides)
     if (manager->current_min_speed > 200.0f)
         manager->current_min_speed = 200.0f;
     if (manager->current_max_speed > 350.0f)
         manager->current_max_speed = 350.0f;
 
+    // Exibe mensagem de dificuldade aumentada
     printf("Dificuldade aumentada! Nível: %d\n", manager->difficulty_level);
     printf("Spawn interval: %.2f, Speed: %.0f-%.0f\n",
            manager->current_spawn_interval,
@@ -104,7 +106,7 @@ void SpawnAsteroid(AsteroidManager* manager, int screen_width) {
     for (int i = 0; i < MAX_ASTEROIDS; i++) {
         if (!manager->asteroids[i].is_active) {
             Asteroid* asteroid = &manager->asteroids[i];
-
+            // Define o tipo de tamanho do asteroide baseado na dificuldade
             int random_val = GetRandomValue(1, 100);
             if (manager->difficulty_level >= 3 && random_val <= 30)
                 asteroid->size_type = 2;
@@ -112,7 +114,7 @@ void SpawnAsteroid(AsteroidManager* manager, int screen_width) {
                 asteroid->size_type = 1;
             else
                 asteroid->size_type = 0;
-
+            // Define a textura e a vida do asteroide baseado no tamanho (balanceamento vida asteroides)
             switch (asteroid->size_type) {
                 case 0:
                     asteroid->texture = manager->small_texture;
@@ -127,10 +129,11 @@ void SpawnAsteroid(AsteroidManager* manager, int screen_width) {
                     asteroid->health  = 3;
                     break;
             }
-
+            // Define a posição inicial do asteroide (posição aleatória no topo da tela)
             asteroid->position.x = GetRandomValue(0, screen_width - asteroid->texture.width);
+            // Asteroides aparecem no topo da tela (o asteroide é gerado no topo - texture.height)
             asteroid->position.y = -asteroid->texture.height;
-
+            // Define a velocidade e rotação do asteroide (balanceamento velocidade asteroides)
             asteroid->velocity.x = GetRandomValue(-50, 50);
             asteroid->velocity.y = GetRandomValue(
                 (int)manager->current_min_speed,
@@ -140,13 +143,17 @@ void SpawnAsteroid(AsteroidManager* manager, int screen_width) {
             asteroid->rotation_speed = GetRandomValue(-180, 180);
             asteroid->is_active      = true;
 
+            // Define a caixa de colisão do asteroide
+
             asteroid->hit_box = {
                 asteroid->position.x,
                 asteroid->position.y,
+                // A caixa de colisão é um pouco maior que a textura para facilitar a colisão
                 (float)asteroid->texture.width + 5,
                 (float)asteroid->texture.height
             };
 
+            // Incrementa o contador de asteroides ativos
             manager->active_count++;
             break;
         }
@@ -157,6 +164,7 @@ void SpawnAsteroid(AsteroidManager* manager, int screen_width) {
 int UpdateAsteroids(AsteroidManager* manager, float frametime, int screen_width, int screen_height) {
     int points_lost = 0;
 
+    // Atualiza o temporizador de dificuldade e spawn
     manager->difficulty_timer += frametime;
     if (manager->difficulty_timer >= DIFFICULTY_INCREASE_INTERVAL) {
         IncreaseDifficulty(manager);
@@ -169,6 +177,7 @@ int UpdateAsteroids(AsteroidManager* manager, float frametime, int screen_width,
         manager->spawn_timer = 0.0f;
     }
 
+    // Atualiza a posição e rotação dos asteroides ativos
     for (int i = 0; i < MAX_ASTEROIDS; i++) {
         if (manager->asteroids[i].is_active) {
             Asteroid* asteroid = &manager->asteroids[i];
@@ -196,9 +205,13 @@ int CheckAsteroidLaserCollisions(AsteroidManager* manager, Laser lasers[], int m
     int score_gained = 0;
 
     for (int i = 0; i < MAX_ASTEROIDS; i++) {
+        // Verifica se o asteroide está ativo
         if (manager->asteroids[i].is_active) {
+            // Verifica colisão com cada laser ativo
             for (int j = 0; j < max_lasers; j++) {
+                // Verifica se o laser está ativo
                 if (lasers[j].is_active) {
+                    // Verifica colisão entre o laser e o asteroide
                     if (CheckCollisionRecs(manager->asteroids[i].hit_box, {
                             lasers[j].position.x,
                             lasers[j].position.y,
@@ -207,7 +220,7 @@ int CheckAsteroidLaserCollisions(AsteroidManager* manager, Laser lasers[], int m
 
                         lasers[j].is_active = false;
                         manager->asteroids[i].health--;
-
+                        // Se a saúde do asteroide chegar a zero, calcula os pontos ganhos (balanceamento pontos asteroides)
                         if (manager->asteroids[i].health <= 0) {
                             int base_points = 0;
                             switch (manager->asteroids[i].size_type) {
@@ -215,8 +228,9 @@ int CheckAsteroidLaserCollisions(AsteroidManager* manager, Laser lasers[], int m
                                 case 1: base_points = 20; break;
                                 case 2: base_points = 30; break;
                             }
-
+                            // Pontos ganhos são baseados no tamanho do asteroide e na dificuldade atual
                             score_gained += base_points + (manager->difficulty_level - 1) * 2;
+
 
                             PlaySound(manager->destruction_sound);
                             manager->asteroids[i].is_active = false;
