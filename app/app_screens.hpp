@@ -17,6 +17,7 @@ void DrawMainMenu(AppAssets app_assets, Player &player, PowerUP &power_up, char 
 
     // Saudação personalizada com o nome do jogador
     DrawTextEx(app_assets.font, TextFormat("Welcome, %s!", username), {1075, 25}, 25, 1, GOLD);
+    DrawTextEx(app_assets.font, TextFormat("Your record in this session: %d", player.score_record), {985, 55}, 20, 1, WHITE);
 
     // Verifica qual opção está selecionada no menu e desenha os textos correspondentes
     switch (selected_option)

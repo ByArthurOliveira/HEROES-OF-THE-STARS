@@ -376,7 +376,6 @@ int InitializeApp(char username[])
         }
         }
 
-        DrawFPS(10, 10);
         EndDrawing();
     }
 
