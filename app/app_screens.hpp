@@ -259,6 +259,11 @@ void DrawCredits(AppAssets app_assets)
                "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n",
                {150, 470}, 21, 1, WHITE);
 
+    DrawTextEx(app_assets.font,
+               "Luciano Reginaldo Junior - Undergraduate Student in Computer Science (Bachelor's Degree)\n"
+               "State University of Rio Grande do Norte (Universidade do Estado do Rio Grande do Norte - UERN).\n",
+               {150, 570}, 21, 1, WHITE);
+
     DrawTexture(app_assets.blur, 0, 0, LIGHTGRAY);
 }
 
